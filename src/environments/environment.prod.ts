@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  domain: window.location.host.split('.').reverse()[2],
 };

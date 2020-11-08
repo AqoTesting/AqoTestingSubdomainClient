@@ -1,4 +1,172 @@
-/* You can add global styles to this file, and also import other style files */
+$gray-night-color: #303030;
+$gray-color: #555555;
+$gray-soft-color: #aaa;
+$transparent-gray-color: #ffffff1f;
+$purple-color: #9c27b0;
+$purple-soft-color: #ce93d8;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: $gray-night-color;
+}
+
+::-webkit-scrollbar {
+  background: $gray-color;
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: $gray-soft-color;
+}
+
+a {
+  color: $purple-soft-color;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.divider {
+  margin-left: 14px;
+  border-left: 1px solid $gray-night-color;
+  display: inline-block;
+  height: 24px;
+}
+
+.clip {
+  display: block;
+  margin-bottom: -3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.loading {
+  margin: 50px auto;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+snack-bar-container {
+  min-height: 0 !important;
+}
+
+.mat-flat-button.mat-primary,
+.mat-raised-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  background-color: $purple-color;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: $purple-color;
+}
+
+.mat-tab-labels {
+  justify-content: space-around !important;
+}
+
+.rooms-conteiner {
+  margin: 25px;
+
+  .rooms-header {
+    display: flex;
+    color: white;
+    margin: auto;
+    max-width: 600px;
+
+    table {
+      width: 100%;
+
+      tr {
+        td {
+          h1 {
+            margin: 0;
+          }
+        }
+        td.rooms-header-action {
+          width: 40px;
+        }
+      }
+    }
+  }
+
+  .room-info {
+    width: 50%;
+    display: inline-block;
+
+    &-name {
+    }
+    &-domain {
+      font-size: 11px;
+    }
+  }
+
+  .room-action {
+    width: 50%;
+    display: inline-block;
+    text-align: right;
+
+    &-icon {
+      margin-left: 14px;
+    }
+  }
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.field-wrapper {
+  border-radius: 4px;
+  margin: 24px 0;
+  border: 1px solid $transparent-gray-color;
+
+  &-title {
+    align-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 8px 8px 8px 16px;
+  }
+
+  &-body {
+    padding: 16px;
+  }
+}
+
+.room-content {
+  max-width: 600px;
+  margin: 25px auto;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  margin: 15px 0;
+}
+
+.radio-button {
+  margin: 5px 0;
+}
+
+.mat-tab-body-content {
+  overflow: hidden !important;
+}

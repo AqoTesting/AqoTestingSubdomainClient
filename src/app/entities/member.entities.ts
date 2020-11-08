@@ -1,0 +1,21 @@
+export class Member {
+  login: string;
+  email: string;
+  name: string;
+}
+
+export class MemberToken {
+  token: string;
+}
+
+export class SignInMember {
+  login: string;
+  password: string;
+}
+
+export class SignUpMember {
+  login: string;
+  password: string;
+  email: string;
+  name: string;
+}

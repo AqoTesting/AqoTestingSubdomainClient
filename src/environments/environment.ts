@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  domain: window.location.host.split(".").reverse()[2]
+  apiUrl: 'http://localhost:5000',
+  subdomain: window.location.host.split('.').reverse()[2],
 };
 
 /*

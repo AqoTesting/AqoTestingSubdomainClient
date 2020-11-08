@@ -1,0 +1,17 @@
+<div
+  class="mat-snack-bar-container-local"
+  [class.mat-snack-bar-container-local-error]="data.type == 'error'"
+  [class.mat-snack-bar-container-local-success]="data.type == 'success'"
+>
+  <mat-icon aria-hidden="false" aria-label="Ошибка">{{
+    data.type == "success" ? "info" : "error"
+  }}</mat-icon>
+
+  <span [innerHTML]="data.message"></span>
+
+  <div class="mat-snack-bar-container-local-action">
+    <button (click)="close()" mat-button>
+      <b>OK</b>
+    </button>
+  </div>
+</div>

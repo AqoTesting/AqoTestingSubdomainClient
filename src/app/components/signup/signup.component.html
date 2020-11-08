@@ -1,0 +1,123 @@
+<mat-card class="auth-card">
+  <mat-card-title>Регистрация</mat-card-title>
+  <mat-card-content>
+    <div class="auth-container">
+      <form *ngIf="room; else loading" [formGroup]="memberSignUp">
+        <p>
+          <mat-form-field class="auth-field" appearance="fill" color="accent">
+            <mat-label>Введите логин</mat-label>
+            <input
+              matInput
+              placeholder="Иванов Иван Иванович"
+              formControlName="login"
+              required
+            />
+            <!--<mat-error *ngIf="name.invalid">{{
+              getErrorMessageName()
+            }}</mat-error>-->
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="auth-field" appearance="fill" color="accent">
+            <mat-label>Введите e-mail</mat-label>
+            <input
+              matInput
+              placeholder="aqo@example.ru"
+              formControlName="email"
+              required
+            />
+            <!--<mat-error *ngIf="email.invalid">{{
+              getErrorMessageEmail()
+            }}</mat-error>-->
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="auth-field" appearance="fill" color="accent">
+            <mat-label>Введите пароль</mat-label>
+            <input
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              formControlName="password"
+              required
+            />
+            <!--<mat-error *ngIf="passwd.invalid">{{
+              getErrorMessagePasswd()
+            }}</mat-error>-->
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              [attr.aria-label]="'Скрыть пароль'"
+              [attr.aria-pressed]="hide"
+            >
+              <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field class="auth-field" appearance="fill" color="accent">
+            <mat-label>Повторите пароль</mat-label>
+            <input
+              matInput
+              [type]="hide ? 'password' : 'text'"
+              formControlName="repeatPassword"
+              required
+            />
+            <!--<mat-error *ngIf="repeatPasswd.invalid">{{
+              getErrorMessageRepeatPasswd()
+            }}</mat-error>-->
+          </mat-form-field>
+        </p>
+        <div formArrayName="fields">
+          <div *ngFor="let field of room.fields; let i = index">
+            <div [formGroupName]="i">
+              <p>
+                <mat-form-field
+                  class="auth-field"
+                  appearance="fill"
+                  color="accent"
+                >
+                  <mat-label>{{ field.name }}</mat-label>
+                  <input
+                    *ngIf="field.type == 1"
+                    matInput
+                    formControlName="value"
+                    [type]="hide ? 'password' : 'text'"
+                    [required]="field.isRequired"
+                  />
+                  <mat-select formControlName="value" *ngIf="field.type == 2">
+                    <mat-option
+                      *ngFor="let option of field.options"
+                      [value]="option"
+                      [required]="field.isRequired"
+                    >
+                      {{ option }}
+                    </mat-option>
+                  </mat-select>
+
+                  <!--<mat-error *ngIf="repeatPasswd.invalid">{{
+              getErrorMessageRepeatPasswd()
+            }}</mat-error>-->
+                </mat-form-field>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="login-action">
+          <div>
+            <button mat-flat-button [disabled]="memberSignUp.invalid">
+              Создать
+            </button>
+          </div>
+          <div>
+            <a routerLink="/auth/signin">Войти</a><br />
+            <a routerLink="/auth/recover">Забыли пароль?</a>
+          </div>
+        </div>
+      </form>
+      <ng-template #loading>
+        <mat-spinner class="loading"></mat-spinner>
+      </ng-template>
+    </div>
+  </mat-card-content>
+</mat-card>

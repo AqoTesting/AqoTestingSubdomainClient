@@ -1,42 +1,13 @@
 <app-navbar></app-navbar>
 <div class="rooms-conteiner">
-  <div class="rooms-header">
-    <table>
-      <tr>
-        <td>
-          <h1>{{ room ? room.name : "" }}</h1>
-        </td>
-        <td class="rooms-header-action">
-          <button
-            routerLink="/rooms"
-            mat-icon-button
-            aria-label="Назад"
-            matTooltip="Назад"
-          >
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-        </td>
-      </tr>
-    </table>
-  </div>
   <ng-container *ngIf="room; else loading" class="rooms-conteiner">
+    <div class="rooms-header">
+      <h1>{{ room.name }}</h1>
+      <div [innerHtml]="room.description"></div>
+    </div>
+
     <div class="room-content">
-      <mat-tab-group mat-align-tabs="center">
-        <mat-tab>
-          <ng-template mat-tab-label>
-            <mat-icon class="tab-icon">check_box</mat-icon>
-            Тесты
-          </ng-template>
-          <app-tests [roomId]="roomId"></app-tests>
-        </mat-tab>
-        <mat-tab style="overflow: hidden;">
-          <ng-template mat-tab-label>
-            <mat-icon class="tab-icon">group</mat-icon>
-            Участники
-          </ng-template>
-          <app-members></app-members>
-        </mat-tab>
-      </mat-tab-group>
+      <app-tests [roomId]="roomId"></app-tests>
     </div>
   </ng-container>
   <ng-template #loading>

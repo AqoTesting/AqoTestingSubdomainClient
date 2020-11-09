@@ -87,25 +87,9 @@ snack-bar-container {
   margin: 25px;
 
   .rooms-header {
-    display: flex;
     color: white;
     margin: auto;
     max-width: 600px;
-
-    table {
-      width: 100%;
-
-      tr {
-        td {
-          h1 {
-            margin: 0;
-          }
-        }
-        td.rooms-header-action {
-          width: 40px;
-        }
-      }
-    }
   }
 
   .room-info {
@@ -154,7 +138,7 @@ mat-form-field {
 
 .room-content {
   max-width: 600px;
-  margin: 25px auto;
+  margin: 15px auto;
 }
 
 .radio-group {

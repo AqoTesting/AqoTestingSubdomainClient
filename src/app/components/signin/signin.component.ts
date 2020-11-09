@@ -5,6 +5,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { SnackService } from 'src/app/services/snack.service';
 import { Background } from 'src/app/utils/background.utility';
+import { Room } from 'src/app/entities/room.entities';
+import { Observable } from 'rxjs';
+import { RoomService } from 'src/app/services/room.service';
 
 @Component({
   selector: 'app-signin',
@@ -25,17 +28,28 @@ export class SignInComponent implements OnInit {
     ]),
   });
 
+  room: Room;
+
+  get room$(): Observable<Room> {
+    return this.roomService.room$;
+  }
+
   hide = true;
 
   constructor(
+    private roomService: RoomService,
     private snackService: SnackService,
     private router: Router,
     private authService: AuthService
   ) {
-    Background.setColor("#9c27b0");
+    Background.setColor('#9c27b0');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.room$.subscribe((room: Room) => {
+      this.room = room;
+    });
+  }
 
   getErrorMessageLogin() {
     let login = this.signInForm.controls['login'];

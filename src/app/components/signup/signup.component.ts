@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -19,8 +19,8 @@ import RepeatValidator from '../../validators/repeat.validator';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
 })
-export class SignUpComponent implements OnInit {
-  memberSignUp: FormGroup = this.fb.group({
+export class SignUpComponent implements OnInit, OnDestroy {
+  signUpForm: FormGroup = this.fb.group({
     login: [
       '',
       [Validators.required, Validators.minLength(1), Validators.maxLength(32)],
@@ -41,12 +41,7 @@ export class SignUpComponent implements OnInit {
 
     repeatPassword: [
       '',
-      [
-        Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(30),
-        //RepeatValidator(this.member.value),
-      ],
+      [Validators.required, Validators.minLength(5), Validators.maxLength(30)],
     ],
 
     fields: this.fb.array([]),
@@ -60,33 +55,32 @@ export class SignUpComponent implements OnInit {
 
   constructor(private roomService: RoomService, private fb: FormBuilder) {
     Background.setColor('#9c27b0');
+    this.signUpForm.controls.repeatPassword.setValidators(
+      RepeatValidator(this.signUpForm.controls.password)
+    );
   }
 
   ngOnInit(): void {
     this.room$.subscribe((room: Room) => {
       this.room = room;
-      console.log(room);
-
       this.initForm();
-      console.log(this.memberSignUp.value);
-      console.log(this.fields.controls[0]);
     });
-
-    setInterval(() => {
-      console.log(this.memberSignUp.invalid);
-    }, 2000);
   }
 
   initForm() {
     this.room.fields.forEach((field) => {
-      this.addField([field.name], ['', Validators.required]);
+      let validators: Validators[] = [];
+      if (field.isRequired) validators.push(Validators.required);
+      if (field.mask) validators.push(Validators.pattern(field.mask));
+
+      this.addField([field.name], ['', validators]);
     });
   }
 
   hide = true;
 
   get fields(): FormArray {
-    return this.memberSignUp.get('fields') as FormArray;
+    return this.signUpForm.get('fields') as FormArray;
   }
 
   getFieldOptions(field: FormGroup): FormArray {
@@ -99,45 +93,19 @@ export class SignUpComponent implements OnInit {
     return field;
   }
 
-  /*getErrorMessageName() {
-    if (this.name.hasError('required')) return 'Введите имя';
-
-    if (this.name.hasError('minlength')) return 'Имя слишком короткое';
-
-    if (this.name.hasError('maxlength')) return 'Имя слишком длинное';
-
-    return this.email.hasError('email') ? 'Неверный e-mail' : '';
-  }
-
-  getErrorMessageEmail() {
-    if (this.email.hasError('required')) return 'Введите email';
-
-    return this.email.hasError('email') ? 'Неверный e-mail' : '';
-  }
-
-  getErrorMessagePasswd() {
-    if (this.passwd.hasError('required')) return 'Введите пароль';
-
-    if (this.passwd.hasError('minlength')) return 'Пароль слишком короткий';
-
-    if (this.passwd.hasError('maxlength')) return 'Пароль слишком длинный';
+  getErrorMessage(control: FormControl) {
+    if (control.hasError('required')) return 'Введите значение';
+    else if (control.hasError('minlength')) return 'Значение слишком короткое';
+    else if (control.hasError('maxlength')) return 'Значение слишком длинное';
+    else if (control.hasError('repeat')) return 'Значения не совпадают';
 
     return '';
   }
 
-  getErrorMessageRepeatPasswd() {
-    if (this.repeatPasswd.hasError('required')) return 'Введите пароль';
+  onSubmit() {
+    delete this.signUpForm.value.repeatPassword;
+    console.log(this.signUpForm.value);
+  }
 
-    if (this.repeatPasswd.hasError('minlength'))
-      return 'Пароль слишком короткий';
-
-    if (this.repeatPasswd.hasError('maxlength'))
-      return 'Пароль слишком длинный';
-
-    if (this.repeatPasswd.hasError('repeat')) {
-      return 'Пароли не совпадают';
-    }
-
-    return '';
-  }*/
+  ngOnDestroy() {}
 }

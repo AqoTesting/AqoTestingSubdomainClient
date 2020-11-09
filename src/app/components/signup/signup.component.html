@@ -2,19 +2,19 @@
   <mat-card-title>Регистрация</mat-card-title>
   <mat-card-content>
     <div class="auth-container">
-      <form *ngIf="room; else loading" [formGroup]="memberSignUp">
+      <form *ngIf="room; else loading" [formGroup]="signUpForm">
         <p>
           <mat-form-field class="auth-field" appearance="fill" color="accent">
             <mat-label>Введите логин</mat-label>
             <input
               matInput
-              placeholder="Иванов Иван Иванович"
+              placeholder="Abaddon"
               formControlName="login"
               required
             />
-            <!--<mat-error *ngIf="name.invalid">{{
-              getErrorMessageName()
-            }}</mat-error>-->
+            <mat-error *ngIf="signUpForm.controls.login.invalid">{{
+              getErrorMessage(signUpForm.controls.login)
+            }}</mat-error>
           </mat-form-field>
         </p>
         <p>
@@ -26,9 +26,9 @@
               formControlName="email"
               required
             />
-            <!--<mat-error *ngIf="email.invalid">{{
-              getErrorMessageEmail()
-            }}</mat-error>-->
+            <mat-error *ngIf="signUpForm.controls.email.invalid">{{
+              getErrorMessage(signUpForm.controls.email)
+            }}</mat-error>
           </mat-form-field>
         </p>
         <p>
@@ -40,9 +40,9 @@
               formControlName="password"
               required
             />
-            <!--<mat-error *ngIf="passwd.invalid">{{
-              getErrorMessagePasswd()
-            }}</mat-error>-->
+            <mat-error *ngIf="signUpForm.controls.password.invalid">{{
+              getErrorMessage(signUpForm.controls.password)
+            }}</mat-error>
             <button
               mat-icon-button
               matSuffix
@@ -63,9 +63,9 @@
               formControlName="repeatPassword"
               required
             />
-            <!--<mat-error *ngIf="repeatPasswd.invalid">{{
-              getErrorMessageRepeatPasswd()
-            }}</mat-error>-->
+            <mat-error *ngIf="signUpForm.controls.repeatPassword.invalid">
+              {{ getErrorMessage(signUpForm.controls.repeatPassword) }}
+            </mat-error>
           </mat-form-field>
         </p>
         <div formArrayName="fields">
@@ -82,8 +82,8 @@
                     *ngIf="field.type == 1"
                     matInput
                     formControlName="value"
-                    [type]="hide ? 'password' : 'text'"
                     [required]="field.isRequired"
+                    [placeholder]="field.placeholder"
                   />
                   <mat-select formControlName="value" *ngIf="field.type == 2">
                     <mat-option
@@ -94,10 +94,12 @@
                       {{ option }}
                     </mat-option>
                   </mat-select>
-
-                  <!--<mat-error *ngIf="repeatPasswd.invalid">{{
-              getErrorMessageRepeatPasswd()
-            }}</mat-error>-->
+                  <mat-error
+                    *ngIf="fields.controls[i].controls.value.invalid"
+                    >{{
+                      getErrorMessage(fields.controls[i].controls.value)
+                    }}</mat-error
+                  >
                 </mat-form-field>
               </p>
             </div>
@@ -105,7 +107,11 @@
         </div>
         <div class="login-action">
           <div>
-            <button mat-flat-button [disabled]="memberSignUp.invalid">
+            <button
+              mat-flat-button
+              (click)="onSubmit()"
+              [disabled]="signUpForm.invalid"
+            >
               Создать
             </button>
           </div>

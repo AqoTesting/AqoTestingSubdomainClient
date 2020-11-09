@@ -4,6 +4,11 @@ export class Member {
   name: string;
 }
 
+export class MemberField {
+  name: string;
+  value: string;
+}
+
 export class MemberToken {
   token: string;
 }
@@ -17,5 +22,5 @@ export class SignUpMember {
   login: string;
   password: string;
   email: string;
-  name: string;
+  fields: MemberField[];
 }

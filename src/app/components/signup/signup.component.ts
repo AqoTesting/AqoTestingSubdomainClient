@@ -44,7 +44,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       [Validators.required, Validators.minLength(5), Validators.maxLength(30)],
     ],
 
-    fields: this.fb.array([]),
+    fields: this.fb.group([]),
   });
 
   room: Room;
@@ -73,24 +73,23 @@ export class SignUpComponent implements OnInit, OnDestroy {
       if (field.isRequired) validators.push(Validators.required);
       if (field.mask) validators.push(Validators.pattern(field.mask));
 
-      this.addField([field.name], ['', validators]);
+      this.addField(field.name, '', validators);
     });
+    console.log(this.fields);
   }
 
   hide = true;
 
-  get fields(): FormArray {
-    return this.signUpForm.get('fields') as FormArray;
+  get fields(): FormGroup {
+    return this.signUpForm.get('fields') as FormGroup;
   }
 
   getFieldOptions(field: FormGroup): FormArray {
     return field.get('options') as FormArray;
   }
 
-  addField(name: any, value: any) {
-    const field = this.fb.group({ name, value });
-    this.fields.push(field);
-    return field;
+  addField(name: string, value: string = '', validators: Validators[]): void {
+    this.fields.addControl(name, this.fb.control(value, ...validators));
   }
 
   getErrorMessage(control: FormControl) {

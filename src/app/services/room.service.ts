@@ -8,7 +8,7 @@ import { Room } from '../entities/room.entities';
 
 @Injectable()
 export class RoomService {
-  room$: ReplaySubject<Room> = new ReplaySubject<Room>();;
+  room$: ReplaySubject<Room> = new ReplaySubject<Room>();
   room: Room;
   roomId: string;
   roomDomain: string;
@@ -68,8 +68,8 @@ export class RoomService {
           name: 'ФИО',
           type: 1,
           isRequired: true,
-          placeholder: 'BsonNull',
-          mask: 'BsonNull',
+          placeholder: null,
+          mask: null,
           options: null,
         },
       ],

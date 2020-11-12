@@ -44,7 +44,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       [Validators.required, Validators.minLength(5), Validators.maxLength(30)],
     ],
 
-    fields: this.fb.group([]),
+    fields: this.fb.group({ }),
   });
 
   room: Room;

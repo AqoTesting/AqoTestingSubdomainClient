@@ -9,7 +9,7 @@ import { TestService } from 'src/app/services/test.service';
   styleUrls: ['./tests.component.scss'],
 })
 export class TestsComponent implements OnInit, OnDestroy {
-  testsSub: Subscription;
+  subscription: Subscription = new Subscription();
   @Input() roomId: string;
 
   tests: any[];
@@ -21,14 +21,14 @@ export class TestsComponent implements OnInit, OnDestroy {
   }
 
   getRoomTests(): void {
-    this.testsSub = this.testService
-      .getRoomTests(this.roomId)
-      .subscribe((data) => {
+    this.subscription.add(
+      this.testService.getRoomTests(this.roomId).subscribe((data) => {
         //this.tests = data;
-      });
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    if (this.testsSub) this.testsSub.unsubscribe();
+    if (this.subscription) this.subscription.unsubscribe();
   }
 }

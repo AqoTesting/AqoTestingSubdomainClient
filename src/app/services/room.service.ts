@@ -19,16 +19,26 @@ export class RoomService {
 
     if (this.roomId) {
       setTimeout(() => {
-        this.room = this.getRoomByDomain(this.roomDomain);
-        this.room$.next(this.room);
-        this.initializeTitle();
+        this.getRoomById(this.roomId).subscribe(
+          (room: Room) => {
+            this.room = room;
+            this.room$.next(this.room);
+            this.initializeTitle();
+          },
+          (error) => this.room$.error(error)
+        );
       }, 1000);
     } else {
-      this.getRoomById(this.roomId).subscribe((data) => {
-        this.room = data;
-        this.room$.next(this.room);
-        this.initializeTitle();
-      });
+      setTimeout(() => {
+        this.getRoomByDomain(this.roomDomain).subscribe(
+          (room: Room) => {
+            this.room = room;
+            this.room$.next(this.room);
+            this.initializeTitle();
+          },
+          (error) => this.room$.error(error)
+        );
+      }, 1000);
     }
   }
 
@@ -41,41 +51,16 @@ export class RoomService {
   }
 
   private getLocalRoomId(): string {
-    return localStorage.getItem('roomId');
+    return localStorage.getItem('roomId') || null;
   }
 
   getRoomById(roomId: string): Observable<Room> {
-    return this.http.get<Room>(environment.apiUrl + '/user/room/' + roomId);
+    return this.http.get<Room>(environment.apiUrl + '/member/room/' + roomId);
   }
 
-  getRoomByDomain(roomDomain: string): Room {
-    return new Room({
-      id: '5fa7e2f9cc011ec92a5922d9',
-      name: 'Операционные системы',
-      domain: 'os',
-      description: 'test',
-      ownerId: '5f905db16b7181c62066ff24',
-      fields: [
-        {
-          name: 'Группа',
-          type: 2,
-          isRequired: false,
-          placeholder: null,
-          mask: null,
-          options: ['ПКС-019', 'ПКС-018'],
-        },
-        {
-          name: 'ФИО',
-          type: 1,
-          isRequired: true,
-          placeholder: null,
-          mask: null,
-          options: null,
-        },
-      ],
-      isActive: false,
-      isApproveManually: false,
-      isRegistrationEnabled: false,
-    });
+  getRoomByDomain(roomDomain: string): Observable<Room> {
+    return this.http.get<Room>(
+      environment.apiUrl + '/member/room/domain/' + roomDomain
+    );
   }
 }

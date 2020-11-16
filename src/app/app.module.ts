@@ -25,6 +25,7 @@ import { RecoverComponentBack } from './components/recover/recover-back.componen
 import { RoomComponent } from './components/room/room.component';
 import { SnackComponent } from './components/snack/snack.component';
 import { TestsComponent } from './components/tests/tests.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { TestsComponent } from './components/tests/tests.component';
     RoomComponent,
     SnackComponent,
     TestsComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

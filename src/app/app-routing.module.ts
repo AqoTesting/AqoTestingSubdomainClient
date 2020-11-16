@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RecoverComponentBack } from './components/recover/recover-back.component';
 import { RecoverComponentFront } from './components/recover/recover-front.component';
 import { RoomComponent } from './components/room/room.component';
@@ -9,6 +10,10 @@ import { AuthorizedGuard } from './guards/authorized.guard';
 import { NotAuthorizedGuard } from './guards/not-authorized.guard';
 
 const routes: Routes = [
+  {
+    path: '404',
+    component: NotFoundComponent,
+  },
   { path: '', component: RoomComponent, canActivate: [AuthorizedGuard] },
   {
     path: 'auth',

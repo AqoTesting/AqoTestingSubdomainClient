@@ -26,6 +26,8 @@ import { RoomComponent } from './components/room/room.component';
 import { SnackComponent } from './components/snack/snack.component';
 import { TestsComponent } from './components/tests/tests.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { RoomNotExistGuard } from './guards/room-not-exist.guard';
+import { RoomExistGuard } from './guards/room-exist.guard';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     AuthorizedGuard,
     NotAuthorizedGuard,
     ExitAboutGuard,
+    RoomExistGuard,
+    RoomNotExistGuard
   ],
   bootstrap: [AppComponent],
 })

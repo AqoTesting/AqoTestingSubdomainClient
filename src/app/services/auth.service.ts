@@ -96,7 +96,7 @@ export class AuthService {
   ): Observable<MemberToken> {
     return this.http
       .post<MemberToken>(
-        environment.apiUrl + '/auth/signin',
+        environment.apiUrl + '/member/signin',
         signInMember
       )
       .pipe(
@@ -111,7 +111,7 @@ export class AuthService {
   ): Observable<MemberToken> {
     return this.http
       .post<MemberToken>(
-        environment.apiUrl + '/auth/signup',
+        environment.apiUrl + '/member/signup',
         signUpMember
       )
       .pipe(

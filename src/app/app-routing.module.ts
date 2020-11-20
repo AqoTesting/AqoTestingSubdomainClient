@@ -8,16 +8,19 @@ import { SignInComponent } from './components/signin/signin.component';
 import { SignUpComponent } from './components/signup/signup.component';
 import { AuthorizedGuard } from './guards/authorized.guard';
 import { NotAuthorizedGuard } from './guards/not-authorized.guard';
+import { RoomExistGuard } from './guards/room-exist.guard';
+import { RoomNotExistGuard } from './guards/room-not-exist.guard';
 
 const routes: Routes = [
   {
     path: '404',
     component: NotFoundComponent,
+    canActivate: [RoomNotExistGuard]
   },
-  { path: '', component: RoomComponent, canActivate: [AuthorizedGuard] },
+  { path: '', component: RoomComponent, canActivate: [RoomExistGuard, AuthorizedGuard] },
   {
     path: 'auth',
-    canActivate: [NotAuthorizedGuard],
+    canActivate: [RoomExistGuard, NotAuthorizedGuard],
     children: [
       { path: '', redirectTo: 'auth/signin', pathMatch: 'full' },
       { path: 'signin', component: SignInComponent },

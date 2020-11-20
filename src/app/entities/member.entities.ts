@@ -16,6 +16,7 @@ export class MemberToken {
 export class SignInMember {
   login: string;
   password: string;
+  roomId: string;
 }
 
 export class SignUpMember {
@@ -23,4 +24,5 @@ export class SignUpMember {
   password: string;
   email: string;
   fields: MemberField[];
+  roomId: string;
 }

@@ -25,7 +25,7 @@ export class SignInComponent implements OnInit {
       Validators.required,
       Validators.minLength(6),
       Validators.maxLength(128),
-    ]),
+    ])
   });
 
   room: Room;
@@ -80,6 +80,7 @@ export class SignInComponent implements OnInit {
 
   onSubmit() {
     this.signInForm.disable();
+    this.signInForm.value.roomId = this.room.id;
     this.authService.getMemberTokenSignIn(this.signInForm.value).subscribe(
       () => {
         this.snackService.success('Вы успешно авторизовались');

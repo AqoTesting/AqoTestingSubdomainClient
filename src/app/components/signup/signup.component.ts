@@ -8,9 +8,13 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { Response } from 'src/app/entities/response.entities';
 import { Room, RoomField } from 'src/app/entities/room.entities';
+import { AuthService } from 'src/app/services/auth.service';
 import { RoomService } from 'src/app/services/room.service';
+import { SnackService } from 'src/app/services/snack.service';
 import { Background } from 'src/app/utils/background.utility';
 import RepeatValidator from '../../validators/repeat.validator';
 
@@ -44,7 +48,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       [Validators.required, Validators.minLength(5), Validators.maxLength(30)],
     ],
 
-    fields: this.fb.group({ }),
+    fields: this.fb.group({}),
   });
 
   room: Room;
@@ -53,7 +57,13 @@ export class SignUpComponent implements OnInit, OnDestroy {
     return this.roomService.room$;
   }
 
-  constructor(private roomService: RoomService, private fb: FormBuilder) {
+  constructor(
+    private authService: AuthService,
+    private snackService: SnackService,
+    private router: Router,
+    private roomService: RoomService,
+    private fb: FormBuilder
+  ) {
     Background.setColor('#9c27b0');
     this.signUpForm.controls.repeatPassword.setValidators(
       RepeatValidator(this.signUpForm.controls.password)
@@ -102,8 +112,20 @@ export class SignUpComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.signUpForm.disable();
     delete this.signUpForm.value.repeatPassword;
-    console.log(this.signUpForm.value);
+    this.signUpForm.value.roomId = this.room.id;
+    this.authService.getMemberTokenSignUp(this.signUpForm.value).subscribe(
+      () => {
+        this.snackService.success('Вы успешно авторизовались');
+        this.router.navigate(['']);
+      },
+      (error) => {
+        if (error instanceof Response)
+          this.snackService.error(error.errorMessageCode);
+        this.signUpForm.enable();
+      }
+    );
   }
 
   ngOnDestroy() {}

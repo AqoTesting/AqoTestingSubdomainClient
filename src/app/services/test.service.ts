@@ -9,7 +9,7 @@ export class TestService {
 
   getRoomTests(roomId: string): Observable<any[]> {
     return this.http.get<any[]>(
-      environment.apiUrl + '/user/room/' + roomId + '/tests'
+      environment.apiUrl + '/member/room/' + roomId + '/tests'
     );
   }
 }

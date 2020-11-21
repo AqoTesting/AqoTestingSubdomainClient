@@ -85,7 +85,6 @@ export class SignUpComponent implements OnInit, OnDestroy {
 
       this.addField(field.name, '', validators);
     });
-    console.log(this.fields);
   }
 
   hide = true;
@@ -118,7 +117,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.authService.getMemberTokenSignUp(this.signUpForm.value).subscribe(
       () => {
         this.snackService.success('Вы успешно авторизовались');
-        this.router.navigate(['']);
+        this.authService.setAuthorized(true);
+        this.router.navigate(['/']);
       },
       (error) => {
         if (error instanceof Response)

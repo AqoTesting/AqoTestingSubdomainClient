@@ -20,7 +20,6 @@ export class RoomExistGuard implements CanActivate {
   ): Observable<boolean> {
     return this.roomService.roomExis$.pipe(
       map((exists) => {
-        console.log('RoomExistGuard', exists);
         if (!exists) this.router.navigate(['/404']);
         return exists;
       })

@@ -8,6 +8,8 @@ import { Response } from './entities/response.entities';
 import { RoomService } from './services/room.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Route } from '@angular/compiler/src/core';
+import { AuthService } from './services/auth.service';
+import { Member } from './entities/member.entities';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +19,15 @@ import { Route } from '@angular/compiler/src/core';
 export class AppComponent implements OnInit {
   env: any = environment;
   room: Room;
-  notFound: boolean = false;
+  error: boolean = false;
+
+  get member(): Member {
+    return this.authService.currentMember;
+  }
 
   constructor(
     private roomService: RoomService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -34,9 +41,18 @@ export class AppComponent implements OnInit {
           this.roomService.setTitle(error.name);
         } else if (error instanceof Response) {
         }
-        this.notFound = true;
-        this.roomService.setTitle("Комната не существует");
+        this.error = true;
+        this.roomService.setTitle('Комната не существует');
         this.router.navigate(['404']);
+      }
+    );
+
+    this.authService.currentMember$.subscribe(
+      (member) => {
+        if (member == null) this.error = true;
+      },
+      () => {
+        this.error = true;
       }
     );
   }

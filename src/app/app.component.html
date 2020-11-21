@@ -1,4 +1,4 @@
-<router-outlet *ngIf="room || notFound; else loading"></router-outlet>
+<router-outlet *ngIf="(room && member) || error; else loading"></router-outlet>
 <ng-template #loading>
   <div style="display: flex;height: 100%;">
     <mat-spinner class="loading" style="margin: auto;"></mat-spinner>

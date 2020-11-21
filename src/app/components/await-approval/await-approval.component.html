@@ -1,0 +1,16 @@
+<header focusOnNavigation class="header-background">
+  <div class="header-section">
+    <div class="header-headline">
+      <h1 class="mat-h1">Участник не проверен</h1>
+    </div>
+    <div class="header-start">
+      <a
+        mat-raised-button
+        class="button"
+        (click)="reload()"
+        [disabled]="second != 0"
+        >Перепроверить{{ second > 0 ? ' ('+second+')' : "" }}</a
+      >
+    </div>
+  </div>
+</header>

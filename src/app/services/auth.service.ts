@@ -1,6 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import {
+  AsyncSubject,
+  BehaviorSubject,
+  Observable,
+  ReplaySubject,
+  throwError,
+} from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import {
   SignInMember,
@@ -15,8 +21,9 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthService {
   private _currentMember: Member;
-  private _currentMember$: ReplaySubject<Member>;
+  public _currentMember$: ReplaySubject<Member>;
   private _isAuthorized: boolean = false;
+  memberIsApproved$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   constructor(private http: HttpClient, private router: Router) {
     this.checkAuthorization();
@@ -28,21 +35,9 @@ export class AuthService {
 
   public get currentMember$(): Observable<Member> {
     if (this._currentMember$ == null || this._currentMember$.hasError) {
-      this._currentMember$ = new ReplaySubject<Member>();
-
+      this._currentMember$ = new ReplaySubject<Member>(1);
       if (this._isAuthorized) {
-        this.getMember()
-          .pipe(take(1))
-          .subscribe(
-            (data: Member) => {
-              this._currentMember = data;
-              this._currentMember$.next(this._currentMember);
-            },
-            (error) => {
-              this._currentMember = null;
-              this._currentMember$.error(error);
-            }
-          );
+        this.getMember().pipe(take(1)).subscribe();
       } else {
         this._currentMember = null;
         this._currentMember$.next(this._currentMember);
@@ -61,7 +56,6 @@ export class AuthService {
     } else {
       if (this._isAuthorized) {
         this._isAuthorized = false;
-        this._currentMember$ = null;
       }
     }
   }
@@ -87,18 +81,27 @@ export class AuthService {
 
   /* Methods */
 
-  private getMember(): Observable<Member> {
-    return this.http.get<Member>(environment.apiUrl + '/Member');
+  public getMember(): Observable<Member> {
+    return this.http.get<Member>(environment.apiUrl + '/member').pipe(
+      tap(
+        (member: Member) => {
+          this._currentMember = member;
+          this.memberIsApproved$.next(this._currentMember.isApproved);
+          this._currentMember$.next(this._currentMember);
+        },
+        (error) => {
+          this._currentMember = null;
+          this._currentMember$.error(error);
+        }
+      )
+    );
   }
 
   public getMemberTokenSignIn(
     signInMember: SignInMember
   ): Observable<MemberToken> {
     return this.http
-      .post<MemberToken>(
-        environment.apiUrl + '/member/signin',
-        signInMember
-      )
+      .post<MemberToken>(environment.apiUrl + '/member/signin', signInMember)
       .pipe(
         tap((data: MemberToken) => {
           this.authorizeByToken(data.token);
@@ -110,10 +113,7 @@ export class AuthService {
     signUpMember: SignUpMember
   ): Observable<MemberToken> {
     return this.http
-      .post<MemberToken>(
-        environment.apiUrl + '/member/signup',
-        signUpMember
-      )
+      .post<MemberToken>(environment.apiUrl + '/member/signup', signUpMember)
       .pipe(
         tap((data: MemberToken) => {
           this.authorizeByToken(data.token);

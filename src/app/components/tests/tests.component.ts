@@ -1,6 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Member } from 'src/app/entities/member.entities';
 import { Room } from 'src/app/entities/room.entities';
+import { AuthService } from 'src/app/services/auth.service';
 import { RoomService } from 'src/app/services/room.service';
 import { TestService } from 'src/app/services/test.service';
 
@@ -29,7 +31,7 @@ export class TestsComponent implements OnInit, OnDestroy {
 
   getRoomTests(): void {
     this.subscription.add(
-      this.testService.getRoomTests(this.room.id).subscribe((data) => {
+      this.testService.getTests().subscribe((data) => {
         this.tests = data;
       })
     );

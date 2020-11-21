@@ -15,13 +15,14 @@ import { AuthService } from '../services/auth.service';
 import { SnackService } from '../services/snack.service';
 import { environment } from '../../environments/environment';
 import { Response } from '../entities/response.entities';
+import { ErrorMessagesCode } from '../enums/error-messages.enum';
 
 @Injectable()
 export class CatchErrorInterceptor implements HttpInterceptor {
   constructor(
     private router: Router,
     private injector: Injector,
-    private _snack: SnackService
+    private snack: SnackService
   ) {}
 
   intercept(
@@ -52,11 +53,18 @@ export class CatchErrorInterceptor implements HttpInterceptor {
             this.injector.get(AuthService).unAuthorize();
             this.router.navigate(['/auth/signin']);
           } else {
-            this._snack.fatal(error.message.replace(environment.apiUrl, ''));
+            this.snack.fatal(error.message.replace(environment.apiUrl, ''));
           }
 
           return throwError(error);
         } else if (error instanceof Response) {
+          if(error.errorMessageCode == ErrorMessagesCode.RoomNotFound) {
+            this.router.navigate(['/404']);
+          } else if (error.errorMessageCode == ErrorMessagesCode.MemberIsNotRegistered)  {
+            this.injector.get(AuthService).unAuthorize();
+            this.router.navigate(['/auth/signup']);
+          }
+
           return throwError(error);
         }
       })

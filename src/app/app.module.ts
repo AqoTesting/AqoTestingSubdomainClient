@@ -28,6 +28,9 @@ import { TestsComponent } from './components/tests/tests.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RoomNotExistGuard } from './guards/room-not-exist.guard';
 import { RoomExistGuard } from './guards/room-exist.guard';
+import { AwaitApprovalComponent } from './components/await-approval/await-approval.component';
+import { MemberIsApproved } from './guards/member-is-approved.guard';
+import { MemberNotIsApproved } from './guards/member-not-is-approved.guard';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { RoomExistGuard } from './guards/room-exist.guard';
     SnackComponent,
     TestsComponent,
     NotFoundComponent,
+    AwaitApprovalComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,9 @@ import { RoomExistGuard } from './guards/room-exist.guard';
     NotAuthorizedGuard,
     ExitAboutGuard,
     RoomExistGuard,
-    RoomNotExistGuard
+    RoomNotExistGuard,
+    MemberIsApproved,
+    MemberNotIsApproved
   ],
   bootstrap: [AppComponent],
 })

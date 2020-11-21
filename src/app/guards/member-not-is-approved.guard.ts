@@ -11,17 +11,17 @@ import { RoomService } from '../services/room.service';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class RoomNotExistGuard implements CanActivate {
-  constructor(private roomService: RoomService, private router: Router) {}
+export class MemberNotIsApproved implements CanActivate {
+  constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    return this.roomService.roomExis$.pipe(
-      map((exists) => {
-        if (exists) this.router.navigate(['/auth/signin']);
-        return !exists;
+    return this.authService.memberIsApproved$.pipe(
+      map((isApproved) => {
+        if (isApproved) this.router.navigate(['/']);
+        return !isApproved;
       })
     );
   }

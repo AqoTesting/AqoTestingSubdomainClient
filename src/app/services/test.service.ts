@@ -7,9 +7,9 @@ import { environment } from 'src/environments/environment';
 export class TestService {
   constructor(private http: HttpClient) {}
 
-  getRoomTests(roomId: string): Observable<any[]> {
+  getTests(): Observable<any[]> {
     return this.http.get<any[]>(
-      environment.apiUrl + '/member/room/' + roomId + '/tests'
+      environment.apiUrl + '/member/tests'
     );
   }
 }

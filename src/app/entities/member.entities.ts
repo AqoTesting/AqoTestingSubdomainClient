@@ -1,13 +1,15 @@
-export class Member {
-  login: string;
-  email: string;
-  name: string;
+interface Dictionary<T> {
+  [key: string]: T;
 }
 
-export class MemberField {
-  name: string;
-  value: string;
-}
+export class Member {
+  id: string;
+  roomId: string;
+  login: string;
+  email: string;
+  isApproved: boolean;
+  fields: Dictionary<string>;
+} 
 
 export class MemberToken {
   token: string;
@@ -23,6 +25,6 @@ export class SignUpMember {
   login: string;
   password: string;
   email: string;
-  fields: MemberField[];
+  fields: Dictionary<string>;
   roomId: string;
 }

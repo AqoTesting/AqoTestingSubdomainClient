@@ -1,16 +1,24 @@
 <app-navbar></app-navbar>
-<div class="rooms-conteiner">
-  <ng-container *ngIf="room; else loading" class="rooms-conteiner">
-    <div class="rooms-header">
-      <h1>{{ room.name }}</h1>
-      <div [innerHtml]="room.description"></div>
-    </div>
+<div class="container">
+  <div class="content">
+    <ng-container *ngIf="room; else loading">
+      <div class="header">
+        <div class="header-left">
+          <h1>{{ room.name }}</h1>
+        </div>
+      </div>
+      <div
+        *ngIf="room.description"
+        [innerHtml]="room.description"
+        class="room-description"
+      ></div>
 
-    <div class="room-content">
-      <app-tests [roomId]="roomId"></app-tests>
-    </div>
-  </ng-container>
-  <ng-template #loading>
-    <mat-spinner class="loading"></mat-spinner>
-  </ng-template>
+      <div class="content">
+        <app-tests [roomId]="roomId"></app-tests>
+      </div>
+    </ng-container>
+    <ng-template #loading>
+      <mat-spinner class="loading"></mat-spinner>
+    </ng-template>
+  </div>
 </div>

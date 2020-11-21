@@ -24,25 +24,12 @@ export class RoomService {
       this.getRoomById(this.roomId).subscribe(
         (room) => this.next(room),
         (error) => {
-          if (
-            error instanceof Response &&
-            (error.errorMessageCode == 201 || error.errorMessageCode == 500)
-          ) {
-            this.getRoomByDomain(this.roomDomain).subscribe(
-              (room) => this.next(room),
-              (error) => this.error(error)
-            );
-          } else {
-            this.error(error);
-          }
+          if (error instanceof Response && error.errorMessageCode == 201)
+            this.getByDomain();
+          else this.error(error);
         }
       );
-    } else {
-      this.getRoomByDomain(this.roomDomain).subscribe(
-        (room) => this.next(room),
-        (error) => this.error(error)
-      );
-    }
+    } else this.getByDomain();
   }
 
   private next(room: Room) {
@@ -54,16 +41,20 @@ export class RoomService {
       this.roomExis$.next(true);
     } else {
       this.removeLocalRoomId();
-      this.getRoomByDomain(this.roomDomain).subscribe(
-        (room) => this.next(room),
-        (error) => this.error(error)
-      );
+      this.getByDomain();
     }
   }
 
   private error(error) {
     this.room$.error(error);
     this.roomExis$.next(false);
+  }
+
+  private getByDomain() {
+    this.getRoomByDomain(this.roomDomain).subscribe(
+      (room) => this.next(room),
+      (error) => this.error(error)
+    );
   }
 
   public setTitle(text: string): void {

@@ -60,6 +60,14 @@ a {
   height: 24px;
 }
 
+.mat-divider {
+  display: block;
+  border-top-width: 1px;
+  border-top-style: solid;
+  margin: 15px 0;
+  border-top-color: hsla(0, 0%, 100%, 0.12);
+}
+
 .m {
   &l {
     margin-left: 15px !important;
@@ -220,16 +228,6 @@ mat-form-field {
   margin: 25px auto;
 }
 
-.radio-group {
-  display: flex;
-  flex-direction: column;
-  margin: 15px 0;
-}
-
-.radio-button {
-  margin: 5px 0;
-}
-
 .mat-tab-body-content {
   overflow: hidden !important;
 }
@@ -327,5 +325,23 @@ mat-form-field {
   }
   &-right {
     text-align: right;
+  }
+}
+
+.flex-row-static {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  &-item {
+    width: calc(100% - 40px);
+  }
+
+  &-icon {
+    width: 24px;
+
+    button {
+      width: 24px;
+    }
   }
 }

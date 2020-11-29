@@ -1,5 +1,117 @@
 <app-navbar></app-navbar>
-
-<router-outlet></router-outlet>
-
-<button [routerLink]="['/attempt', attemptId, 'section', sectionId+2, 'question', questionId+2]"></button>
+<div class="container">
+  <div class="content">
+    <div class="header">
+      <div class="header-left">
+        <h1>{{ section?.title }}</h1>
+      </div>
+      <div class="header-right">
+        <button
+          routerLink="/"
+          mat-icon-button
+          aria-label="Назад"
+          matTooltip="Назад"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="attempt; else loading" class="attempt">
+      <mat-card class="question">
+        <div [innerHtml]="question?.text"></div>
+        <div *ngIf="question?.imageUrl">
+          <div
+            *ngIf="question?.imageUrl"
+            class="flex-row-static"
+            style="gap: 8px; margin-top: 8px"
+          >
+            <div class="flex-row-static-item img">
+              <img [src]="question.imageUrl" />
+            </div>
+            <div class="flex-row-static-icon">
+              <div>
+                <a [href]="question.imageUrl" target="_blank">
+                  <mat-icon
+                    matTooltip="Просмотреть изображение"
+                    nclass="pointer"
+                    >open_in_new</mat-icon
+                  >
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mat-divider"></div>
+        <div class="options" [ngSwitch]="question.type">
+          <ng-container *ngSwitchCase="0">
+            <mat-radio-group (change)="changeRadio($event.value)">
+              <div *ngFor="let option of question.options; let i = index" class="radio-group">
+                <mat-radio-button class="radio-button" [value]="i" [checked]="option.chosen"></mat-radio-button>
+                <div [innerHtml]="option.text" class="radio-content"></div>
+              </div>
+            </mat-radio-group>
+          </ng-container>
+          <ng-container *ngSwitchCase="1">
+            <div *ngFor="let option of question.options" class="checkbox-group">
+              <mat-checkbox class="checkbox-button" [checked]="option.chosen" (change)="option.chosen = !option.chosen"></mat-checkbox>
+              <div [innerHtml]="option.text" class="radio-content"></div>
+            </div>
+            
+          </ng-container>
+          <ng-container *ngSwitchCase="2">
+            <div class="matching-group">
+              <div class="matching-left">
+                <div *ngFor="let option of question.leftMatching" class="matching-left-drag">
+                  <div [innerHtml]="option.text"></div>
+                </div>
+              </div>
+              <div class="matching-right">
+                <div cdkDropList (cdkDropListDropped)="drop($event)" style="width: calc(100% - 12px);">
+                  <div *ngFor="let option of question.rightMatching" class="matching-right-drag" cdkDrag>
+                    <div [innerHtml]="option.text"></div>
+                  </div>
+              </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchCase="3">Порядок</ng-container>
+        </div>
+        <div></div>
+      </mat-card>
+      <div class="navigate">
+        <div class="timer" *ngIf="timer.second">{{ timer.minute }}:{{ timer.second }}</div>
+        <div>
+          <button
+            mat-icon-button
+            (click)="before()"
+            matTooltip="Предыдущий вопрос"
+            [disabled]="lock"
+          >
+            <mat-icon>navigate_before</mat-icon>
+          </button>
+        </div>
+        <div>
+          <button mat-icon-button matTooltip="Список вопросов" [disabled]="lock">
+            <mat-icon>list</mat-icon>
+          </button>
+        </div>
+        <div>
+          <button
+            mat-icon-button
+            (click)="next()"
+            matTooltip="Следующий вопрос"
+            [disabled]="lock"
+          >
+            <mat-icon>navigate_next</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="finalize">
+        <button mat-flat-button [disabled]="lock" (click)="endAttempt()">Завершить тест</button>
+      </div>
+    </div>
+    <ng-template #loading>
+      <mat-spinner class="loading"></mat-spinner>
+    </ng-template>
+  </div>
+</div>

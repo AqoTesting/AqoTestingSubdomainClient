@@ -30,6 +30,7 @@
               mat-flat-button
               [disabled]="!testAvailable()"
               [title]="testAvailableMessage()"
+              (click)="beginTest()"
             >
               Пройти тест
             </button>

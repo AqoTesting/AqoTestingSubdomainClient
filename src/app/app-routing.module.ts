@@ -50,14 +50,14 @@ const routes: Routes = [
     canActivate: [AuthorizedGuard],
   },
   {
-    path: 'attempt/:attemptId',
+    path: 'attempt/active',
     canActivate: [AuthorizedGuard],
     children: [
       {
         path: 'section/:sectionId/question/:questionId',
         component: AttemptComponent,
       },
-      { path: '**', redirectTo: 'section/1/question/1', pathMatch: 'prefix' },
+      { path: '**', redirectTo: 'section/0/question/0', pathMatch: 'prefix' },
     ],
   },
   { path: '**', redirectTo: '' },

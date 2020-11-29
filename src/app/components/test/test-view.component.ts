@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Rank, Test } from 'src/app/entities/test.entities';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { TestService } from 'src/app/services/test.service';
 import { SnackService } from 'src/app/services/snack.service';
 import * as moment from 'moment';
+import { Response } from 'src/app/entities/response.entities';
 
 @Component({
   selector: 'app-test-view',
@@ -34,6 +35,7 @@ export class TestViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     public location: Location,
     private testService: TestService,
     private snack: SnackService
@@ -83,6 +85,21 @@ export class TestViewComponent implements OnInit, OnDestroy {
     } else {
       return '';
     }
+  }
+
+  beginTest() {
+    this.subscription.add(
+      this.testService.beginTest(this.testId).subscribe(
+        () => {
+          this.router.navigate(['attempt', 'active']);
+        },
+        (error) => {
+          if (error instanceof Response) {
+            this.snack.error(error.errorMessageCode);
+          }
+        }
+      )
+    );
   }
 
   ngOnDestroy() {

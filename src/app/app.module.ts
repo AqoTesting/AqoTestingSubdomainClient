@@ -33,6 +33,7 @@ import { MemberIsApproved } from './guards/member-is-approved.guard';
 import { MemberNotIsApproved } from './guards/member-not-is-approved.guard';
 import { TestViewComponent } from './components/test/test-view.component';
 import { AttemptComponent } from './components/attempt/attempt.component';
+import { AttemptService } from './services/attempt.service';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AttemptComponent } from './components/attempt/attempt.component';
     RoomService,
     SnackService,
     TestService,
+    AttemptService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

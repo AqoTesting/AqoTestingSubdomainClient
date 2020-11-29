@@ -15,4 +15,10 @@ export class TestService {
   getTest(testId: string): Observable<Test> {
     return this.http.get<Test>(environment.apiUrl + '/member/test/' + testId);
   }
+
+  beginTest(testId: string): Observable<{ attemptId: string }> {
+    return this.http.get<{ attemptId: string }>(
+      environment.apiUrl + '/member/test/' + testId + '/begin'
+    );
+  }
 }

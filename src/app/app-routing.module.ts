@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AttemptComponent } from './components/attempt/attempt.component';
 import { AwaitApprovalComponent } from './components/await-approval/await-approval.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { RecoverComponentBack } from './components/recover/recover-back.component';
@@ -7,6 +8,7 @@ import { RecoverComponentFront } from './components/recover/recover-front.compon
 import { RoomComponent } from './components/room/room.component';
 import { SignInComponent } from './components/signin/signin.component';
 import { SignUpComponent } from './components/signup/signup.component';
+import { TestViewComponent } from './components/test/test-view.component';
 import { AuthorizedGuard } from './guards/authorized.guard';
 import { MemberIsApproved } from './guards/member-is-approved.guard';
 import { MemberNotIsApproved } from './guards/member-not-is-approved.guard';
@@ -18,14 +20,18 @@ const routes: Routes = [
   {
     path: '404',
     component: NotFoundComponent,
-    canActivate: [RoomNotExistGuard]
+    canActivate: [RoomNotExistGuard],
   },
   {
     path: 'await-approval',
     component: AwaitApprovalComponent,
-    canActivate: [RoomExistGuard, MemberNotIsApproved]
+    canActivate: [RoomExistGuard, MemberNotIsApproved],
   },
-  { path: '', component: RoomComponent, canActivate: [RoomExistGuard, AuthorizedGuard, MemberIsApproved] },
+  {
+    path: '',
+    component: RoomComponent,
+    canActivate: [RoomExistGuard, AuthorizedGuard, MemberIsApproved],
+  },
   {
     path: 'auth',
     canActivate: [RoomExistGuard, NotAuthorizedGuard],
@@ -38,6 +44,23 @@ const routes: Routes = [
       { path: '**', redirectTo: 'signin' },
     ],
   },
+  {
+    path: 'test/:testId',
+    component: TestViewComponent,
+    canActivate: [AuthorizedGuard],
+  },
+  {
+    path: 'attempt/:attemptId',
+    canActivate: [AuthorizedGuard],
+    children: [
+      {
+        path: 'section/:sectionId/question/:questionId',
+        component: AttemptComponent,
+      },
+      { path: '**', redirectTo: 'section/1/question/1', pathMatch: 'prefix' },
+    ],
+  },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

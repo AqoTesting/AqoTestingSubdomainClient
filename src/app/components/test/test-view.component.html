@@ -1,0 +1,80 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="content">
+    <div class="header">
+      <div class="header-left">
+        <h1>{{ test?.title }}</h1>
+      </div>
+      <div class="header-right">
+        <button
+          (click)="location.back()"
+          mat-icon-button
+          aria-label="Назад"
+          matTooltip="Назад"
+        >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </div>
+    <ng-container *ngIf="test; else loading">
+      <mat-tab-group
+        mat-align-tabs="center"
+        style="margin: 24px 0"
+        animationDuration="0ms"
+      >
+        <mat-tab label="Попытки">
+          <div class="content-body text-center white">
+            Вы ещё не прходили тест
+            <br /><br />
+            <button
+              mat-flat-button
+              [disabled]="!testAvailable()"
+              [title]="testAvailableMessage()"
+            >
+              Пройти тест
+            </button>
+          </div>
+        </mat-tab>
+        <mat-tab label="Документы" *ngIf="test.documents?.length">
+          <mat-card class="tests-line" *ngFor="let document of test.documents">
+            <div>{{ document.title }}</div>
+
+            <div class="tests-line-right">
+              <a [href]="document.link" target="_blank">
+                <mat-icon matTooltip="Открыть в новой вкладке"
+                  >open_in_new</mat-icon
+                >
+              </a>
+            </div>
+          </mat-card>
+        </mat-tab>
+        <mat-tab label="Шкала оценок" *ngIf="test.ranks?.length">
+          <table class="ranks-table">
+            <tr class="ranks-table-head">
+              <th></th>
+              <th style="padding-left: 0px">Оценка</th>
+              <th>Балл</th>
+            </tr>
+            <tr *ngFor="let rank of test.ranks" class="ranks-table-body">
+              <td style="width: 25px">
+                <div
+                  class="circle"
+                  [style.background-color]="'#' + rank.color"
+                ></div>
+              </td>
+              <td style="padding-left: 0px">
+                {{ rank.title }}
+              </td>
+              <td>
+                {{ rank.minimumScore == 0 ? "" : "от " + rank.minimumScore }}
+              </td>
+            </tr>
+          </table>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
+    <ng-template #loading>
+      <mat-spinner class="loading"></mat-spinner>
+    </ng-template>
+  </div>
+</div>

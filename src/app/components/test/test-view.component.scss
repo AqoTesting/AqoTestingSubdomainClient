@@ -1,0 +1,36 @@
+.ranks-table {
+  text-align: left;
+  background: #424242;
+  margin: 24px 0;
+  border-radius: 4px;
+
+  &-head {
+    height: 50px;
+    font-weight: 500;
+    color: hsla(0, 0%, 100%, 0.7);
+
+    th {
+      padding-left: 15px;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-bottom-color: hsla(0, 0%, 100%, 0.12);
+    }
+  }
+  &-body {
+    height: 50px;
+    color: white;
+
+    td {
+      padding-left: 15px;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-bottom-color: hsla(0, 0%, 100%, 0.12);
+
+      .circle {
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+      }
+    }
+  }
+}

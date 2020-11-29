@@ -3,28 +3,33 @@
     <div class="under-header-left"><h3>Тесты</h3></div>
   </div>
   <ng-container *ngIf="tests; else loading">
-    <mat-card class="tests-line" *ngFor="let test of tests">
-      <div class="test-fields">
-        <div class="test-field">
-          <div class="test-field-name">Название</div>
-          <div class="test-field-value">
-            {{ test.title }}
+    <ng-container *ngIf="tests.length; else noTests">
+      <mat-card class="tests-line" *ngFor="let test of tests">
+        <div class="test-fields">
+          <div class="test-field">
+            <div class="test-field-name">Название</div>
+            <div class="test-field-value">
+              {{ test.title }}
+            </div>
+          </div>
+          <div class="test-field">
+            <div class="test-field-name">Доступен</div>
+            <div class="test-field-value">
+              {{ testAvailable(test) }}
+            </div>
           </div>
         </div>
-        <div class="test-field">
-          <div class="test-field-name">Доступен</div>
-          <div class="test-field-value">
-            через 5 дня
-          </div>
-        </div>
-      </div>
 
-      <div class="tests-line-right">
-        <mat-icon matTooltip="Просмотреть тест" class="pointer room-action-icon"
-          >preview</mat-icon
-        >
-      </div>
-    </mat-card>
+        <div class="tests-line-right">
+          <mat-icon
+            matTooltip="Просмотреть тест"
+            [routerLink]="['test', test.id]"
+            class="pointer room-action-icon"
+            >preview</mat-icon
+          >
+        </div>
+      </mat-card>
+    </ng-container>
     <ng-template #noTests>
       <div class="text-center white">В комнате ещё нет тестов</div>
     </ng-template>

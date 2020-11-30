@@ -16,7 +16,7 @@
         </button>
       </div>
     </div>
-    <ng-container *ngIf="test; else loading">
+    <ng-container *ngIf="test && attempts; else loading">
       <mat-tab-group
         mat-align-tabs="center"
         style="margin: 24px 0"
@@ -24,16 +24,63 @@
       >
         <mat-tab label="Попытки">
           <div class="content-body text-center white">
-            Вы ещё не прходили тест
-            <br /><br />
+            <ng-container *ngIf="attempts.length; else noAttempts">
+              <mat-card
+                class="tests-line text-left"
+                *ngFor="let attempt of attempts"
+              >
+                <div class="test-fields">
+                  <div class="test-field" *ngIf="!attempt.isActive">
+                    <div class="test-field-name">Дата завершения</div>
+                    <div class="test-field-value">
+                      {{ attempt.endDate | date: "hh:mm d.MM.yy" }}
+                    </div>
+                  </div>
+                  <div class="test-field" *ngIf="attempt.isActive">
+                    <div class="test-field-name">Дата начала</div>
+                    <div class="test-field-value">
+                      {{ attempt.startDate | date: "mm:ss" }}
+                    </div>
+                  </div>
+                  <div class="test-field">
+                    <div class="test-field-name">Баллы</div>
+                    <div class="test-field-value">
+                      {{ attempt.score }}
+                    </div>
+                  </div>
+                </div>
+                <div class="tests-line-right" style="height: 40px">
+                  {{ attempt.isActive }}
+                  <button
+                    *ngIf="attempt.isActive"
+                    mat-icon-button
+                    matTooltip="Продолжить тест"
+                    routerLink="/attempt/active/"
+                  >
+                    <mat-icon>play_arrow</mat-icon>
+                  </button>
+                </div>
+              </mat-card>
+            </ng-container>
+            <ng-template #noAttempts>
+              Вы ещё не прходили тест
+              <br /><br
+            /></ng-template>
+
             <button
               mat-flat-button
               [disabled]="!testAvailable()"
               [title]="testAvailableMessage()"
               (click)="beginTest()"
+              *ngIf="checkAttemptsIsActive(); else proceedAttempt"
             >
-              Пройти тест
+              Начать тест
             </button>
+            <ng-template #proceedAttempt>
+              <button mat-flat-button routerLink="/attempt/active/">
+                Продолжить тест
+              </button>
+            </ng-template>
           </div>
         </mat-tab>
         <mat-tab label="Документы" *ngIf="test.documents?.length">

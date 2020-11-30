@@ -13,6 +13,12 @@ export class Attempt {
   score: boolean;
 }
 
+export class AttemptResumeData {
+  testId: string;
+  currentSectionId: string;
+  currentQuestionId: string;
+}
+
 export class Section {
   id: string;
   title: string;

@@ -8,6 +8,9 @@ import { TestService } from 'src/app/services/test.service';
 import { SnackService } from 'src/app/services/snack.service';
 import * as moment from 'moment';
 import { Response } from 'src/app/entities/response.entities';
+import { Attempt } from 'src/app/entities/attempt.entities';
+import { AttemptService } from 'src/app/services/attempt.service';
+import { AttemptComponent } from '../attempt/attempt.component';
 
 @Component({
   selector: 'app-test-view',
@@ -22,13 +25,8 @@ export class TestViewComponent implements OnInit, OnDestroy {
   deactivationDate: moment.Moment;
 
   test: Test;
+  attempts: Attempt[];
 
-  ranks: Rank[] = [
-    { title: 'Не удовлетворительно', minimumScore: 0, color: 'ff0000' },
-    { title: 'Удовлетворительно', minimumScore: 10, color: 'ffa500' },
-    { title: 'Хорошо', minimumScore: 20, color: '69f0ae' },
-    { title: 'Отлично', minimumScore: 30, color: '00ef7a' },
-  ];
   get now(): moment.Moment {
     return moment();
   }
@@ -38,6 +36,7 @@ export class TestViewComponent implements OnInit, OnDestroy {
     private router: Router,
     public location: Location,
     private testService: TestService,
+    private attemptService: AttemptService,
     private snack: SnackService
   ) {
     moment.locale('ru');
@@ -50,6 +49,7 @@ export class TestViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getTest();
+    this.getAttempts();
   }
 
   getTest() {
@@ -58,12 +58,31 @@ export class TestViewComponent implements OnInit, OnDestroy {
         this.test = test;
         this.activationDate = moment(this.test.activationDate);
         this.deactivationDate = moment(this.test.deactivationDate);
-        console.log(test);
       })
     );
   }
 
+  getAttempts() {
+    this.subscription.add(
+      this.attemptService
+        .getAttemptsByTestId(this.testId)
+        .subscribe((attempts: Attempt[]) => {
+          this.attempts = attempts.filter((attempt) => !attempt.ignore);
+          console.log(attempts);
+        })
+    );
+  }
+
+  checkAttemptsIsActive(): boolean {
+    return ~this.attempts.findIndex((attempt) => attempt.isActive)
+      ? false
+      : true;
+  }
+
   testAvailable(): boolean {
+    if (this.test?.attemptsNumber <= this.attempts.length)
+      return false;
+
     const now = this.now;
 
     if (this.test.activationDate && now < this.activationDate) {
@@ -76,6 +95,9 @@ export class TestViewComponent implements OnInit, OnDestroy {
   }
 
   testAvailableMessage(): string {
+    if (this.test?.attemptsNumber <= this.attempts.length)
+      return 'У Вас не осталось попыток';
+
     const now = this.now;
 
     if (this.test.activationDate && now < this.activationDate) {
@@ -95,7 +117,11 @@ export class TestViewComponent implements OnInit, OnDestroy {
         },
         (error) => {
           if (error instanceof Response) {
-            this.snack.error(error.errorMessageCode);
+            if (error.errorMessageCode == 512) {
+              this.router.navigate(['attempt', 'active']);
+            } else {
+              this.snack.error(error.errorMessageCode);
+            }
           }
         }
       )

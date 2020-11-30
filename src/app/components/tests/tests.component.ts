@@ -8,6 +8,9 @@ import { RoomService } from 'src/app/services/room.service';
 import { TestService } from 'src/app/services/test.service';
 
 import * as moment from 'moment';
+import { AttemptService } from 'src/app/services/attempt.service';
+import { AttemptResumeData } from 'src/app/entities/attempt.entities';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tests',
@@ -25,16 +28,20 @@ export class TestsComponent implements OnInit, OnDestroy {
     return moment();
   }
   tests: Test[];
+  attemptResumeData: AttemptResumeData;
 
   constructor(
+    private router: Router,
     private roomService: RoomService,
-    private testService: TestService
+    private testService: TestService,
+    private attemptService: AttemptService
   ) {
     moment.locale('ru');
   }
 
   ngOnInit(): void {
     this.getRoomTests();
+    this.getActiveAttemptResumeData();
   }
 
   getRoomTests(): void {
@@ -43,6 +50,25 @@ export class TestsComponent implements OnInit, OnDestroy {
         this.tests = data.filter((test) => test.isActive);
       })
     );
+  }
+
+  getActiveAttemptResumeData() {
+    this.subscription.add(
+      this.attemptService
+        .getActiveAttemptResumeData()
+        .subscribe((attemptResumeData) => {
+          this.attemptResumeData = attemptResumeData;
+        })
+    );
+  }
+
+  proceedAttempt() {
+    this.router.navigate([
+      '/attempt/active/section',
+      this.attemptResumeData.currentSectionId,
+      'question',
+      this.attemptResumeData.currentQuestionId,
+    ]);
   }
 
   testAvailable(test: Test): string {

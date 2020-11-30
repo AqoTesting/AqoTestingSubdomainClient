@@ -6,7 +6,7 @@ import {
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { interval, Subscription } from 'rxjs';
+import { fromEvent, interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import {
   Section,
@@ -26,12 +26,18 @@ import { AttemptService } from '../../services/attempt.service';
 })
 export class AttemptComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
+  private focusObserver: Subscription;
+  private blurObserver: Subscription;
   public lock: boolean = false;
   public sectionId: number;
   public questionId: number;
   public attempt: Attempt;
   public section: Section;
   public question: Question;
+  private questionOpenTime: moment.Moment;
+  private focusTime: moment.Moment;
+  private blurTime: moment.Moment;
+  private blurTimeAddition: number;
   public timer: { minute: string; second: string } = {
     minute: null,
     second: null,
@@ -61,6 +67,24 @@ export class AttemptComponent implements OnInit, OnDestroy {
     this.getActiveAttempt();
   }
 
+  startBlurObserver() {
+    if (this.blurObserver) this.blurObserver.unsubscribe();
+    if (this.focusObserver) this.focusObserver.unsubscribe();
+
+    this.questionOpenTime = moment();
+    this.blurTime = moment();
+    this.blurTimeAddition = 0;
+
+    this.blurObserver = fromEvent(window, 'blur').subscribe(() => {
+      this.blurTime = moment();
+    });
+
+    this.focusObserver = fromEvent(window, 'focus').subscribe(() => {
+      this.focusTime = moment();
+      this.blurTimeAddition += this.focusTime.diff(this.blurTime, 'second');
+    });
+  }
+
   startTimer() {
     const source = interval(1000);
 
@@ -75,8 +99,6 @@ export class AttemptComponent implements OnInit, OnDestroy {
       this.timer.second = String(second).padStart(2, '0');
 
       if (minute == 0 && second == 1) {
-        this.timer.minute = '0';
-        this.timer.second = '00';
         this.endAttempt(true);
       }
     };
@@ -157,6 +179,7 @@ export class AttemptComponent implements OnInit, OnDestroy {
         this.questionId = newQuestionId;
         this.section = this.attempt.sections[this.sectionId];
         this.question = this.section.questions[this.questionId];
+        this.startBlurObserver();
         return;
       }
     }
@@ -227,8 +250,8 @@ export class AttemptComponent implements OnInit, OnDestroy {
         break;
     }
 
-    //answer.totalTimeAddition = 0;
-    //answer.blurTimeAddition = 0;
+    answer.totalTimeAddition = moment().diff(this.questionOpenTime, 'second');
+    answer.blurTimeAddition = this.blurTimeAddition;
 
     return answer;
   }

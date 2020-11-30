@@ -20,13 +20,22 @@
           </div>
         </div>
 
-        <div class="tests-line-right">
-          <mat-icon
+        <div class="tests-line-right" style="height: 40px">
+          <button
+            mat-icon-button
             matTooltip="Просмотреть тест"
             [routerLink]="['test', test.id]"
-            class="pointer room-action-icon"
-            >preview</mat-icon
           >
+            <mat-icon>preview</mat-icon>
+          </button>
+          <button
+            *ngIf="test.id == attemptResumeData?.testId"
+            mat-icon-button
+            matTooltip="Продолжить тест"
+            (click)="proceedAttempt()"
+          >
+            <mat-icon>play_arrow</mat-icon>
+          </button>
         </div>
       </mat-card>
     </ng-container>

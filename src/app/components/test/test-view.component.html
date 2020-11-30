@@ -39,7 +39,7 @@
                   <div class="test-field" *ngIf="attempt.isActive">
                     <div class="test-field-name">Дата начала</div>
                     <div class="test-field-value">
-                      {{ attempt.startDate | date: "mm:ss" }}
+                      {{ attempt.startDate | date: "hh:mm d.MM.yy" }}
                     </div>
                   </div>
                   <div class="test-field">
@@ -50,12 +50,11 @@
                   </div>
                 </div>
                 <div class="tests-line-right" style="height: 40px">
-                  {{ attempt.isActive }}
                   <button
                     *ngIf="attempt.isActive"
                     mat-icon-button
                     matTooltip="Продолжить тест"
-                    routerLink="/attempt/active/"
+                    (click)="toActiveAttempt()"
                   >
                     <mat-icon>play_arrow</mat-icon>
                   </button>
@@ -77,7 +76,7 @@
               Начать тест
             </button>
             <ng-template #proceedAttempt>
-              <button mat-flat-button routerLink="/attempt/active/">
+              <button mat-flat-button (click)="toActiveAttempt()">
                 Продолжить тест
               </button>
             </ng-template>

@@ -94,6 +94,16 @@ export class TestViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  toActiveAttempt() {
+    let attempt = this.attempts.find(attempt => attempt.isActive)
+    this.router.navigate([
+      '/attempt/active/section',
+      attempt.currentSectionId || "0",
+      'question',
+      attempt.currentQuestionId || "0",
+    ]);
+  }
+
   testAvailableMessage(): string {
     if (this.test?.attemptsNumber <= this.attempts.length)
       return 'У Вас не осталось попыток';

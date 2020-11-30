@@ -41,14 +41,14 @@
           </div>
           <div class="test-field" *ngIf="test?.startDate">
             <div class="test-field-name">Дата начала</div>
-            <div class="test-field-value">
+            <div class="test-field-value" [title]="test.startDate | date: 'hh:mm d.MM.yyyy'">
               {{ test.startDate | date: "d.MM.yy hh:mm" }}
             </div>
           </div>
           <div class="test-field" *ngIf="test?.endDate">
             <div class="test-field-name">Дата завершения</div>
-            <div class="test-field-value">
-              {{ test.endDate | date: "d.MM.yy hh:mm" }}
+            <div class="test-field-value" [title]="test.endDate | date: 'hh:mm d.MM.yyyy'">
+              {{ test.endDate | date: "hh:mm d.MM" }}
             </div>
           </div>
         </div>
@@ -68,14 +68,14 @@
                 <div class="test-fields">
                   <div class="test-field" *ngIf="!attempt.isActive">
                     <div class="test-field-name">Дата завершения</div>
-                    <div class="test-field-value">
-                      {{ attempt.endDate | date: "d.MM.yy hh:mm" }}
+                    <div class="test-field-value" [title]="attempt.startDate | date: 'hh:mm d.MM.yyyy'">
+                      {{ attempt.endDate | date: "hh:mm d.MM" }}
                     </div>
                   </div>
                   <div class="test-field" *ngIf="attempt.isActive">
                     <div class="test-field-name">Дата начала</div>
-                    <div class="test-field-value">
-                      {{ attempt.startDate | date: "d.MM.yy hh:mm" }}
+                    <div class="test-field-value" [title]="attempt.startDate | date: 'hh:mm d.MM.yyyy'">
+                      {{ attempt.startDate | date: "hh:mm d.MM" }}
                     </div>
                   </div>
                   <div class="test-field">

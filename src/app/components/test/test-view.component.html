@@ -17,6 +17,42 @@
       </div>
     </div>
     <ng-container *ngIf="test && attempts; else loading">
+      <div class="white" style="margin-top: 15px;padding: 2px 13px 2px 13px;border-left: 1px solid #ffffff1f;">
+        <div class="test-fields">
+          <div class="test-field" *ngIf="test?.description">
+            <div class="test-field-name">Описание теста</div>
+            <div class="test-field-value">
+              {{ test.description }}
+            </div>
+          </div>
+        </div>
+        <div class="test-fields">
+          <div class="test-field">
+            <div class="test-field-name">Состояние</div>
+            <div class="test-field-value">
+              {{ test.isActive ? "Активен" : "Неактивен" }}
+            </div>
+          </div>
+          <div class="test-field" *ngIf="test?.attemptsNumber">
+            <div class="test-field-name">Попыток</div>
+            <div class="test-field-value">
+              {{ test.attemptsNumber }}
+            </div>
+          </div>
+          <div class="test-field" *ngIf="test?.startDate">
+            <div class="test-field-name">Дата начала</div>
+            <div class="test-field-value">
+              {{ test.startDate | date: "d.MM.yy hh:mm" }}
+            </div>
+          </div>
+          <div class="test-field" *ngIf="test?.endDate">
+            <div class="test-field-name">Дата завершения</div>
+            <div class="test-field-value">
+              {{ test.endDate | date: "d.MM.yy hh:mm" }}
+            </div>
+          </div>
+        </div>
+      </div>
       <mat-tab-group
         mat-align-tabs="center"
         style="margin: 24px 0"
@@ -33,13 +69,13 @@
                   <div class="test-field" *ngIf="!attempt.isActive">
                     <div class="test-field-name">Дата завершения</div>
                     <div class="test-field-value">
-                      {{ attempt.endDate | date: "hh:mm d.MM.yy" }}
+                      {{ attempt.endDate | date: "d.MM.yy hh:mm" }}
                     </div>
                   </div>
                   <div class="test-field" *ngIf="attempt.isActive">
                     <div class="test-field-name">Дата начала</div>
                     <div class="test-field-value">
-                      {{ attempt.startDate | date: "hh:mm d.MM.yy" }}
+                      {{ attempt.startDate | date: "d.MM.yy hh:mm" }}
                     </div>
                   </div>
                   <div class="test-field">
@@ -106,14 +142,14 @@
               <td style="width: 25px">
                 <div
                   class="circle"
-                  [style.background-color]="'#' + rank.color"
+                  [style.background-color]="'#' + rank.backgroundColor"
                 ></div>
               </td>
               <td style="padding-left: 0px">
                 {{ rank.title }}
               </td>
               <td>
-                {{ rank.minimumScore == 0 ? "" : "от " + rank.minimumScore }}
+                {{ rank.minimumScore == 0 ? "" : "от " + rank.minimumScore + "%" }}
               </td>
             </tr>
           </table>

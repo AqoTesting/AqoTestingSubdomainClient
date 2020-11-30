@@ -118,7 +118,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
       () => {
         this.snackService.success('Вы успешно авторизовались');
         this.authService.setAuthorized(true);
-        this.router.navigate(['/']);
+        this.router.navigate(['/await-approval']);
       },
       (error) => {
         if (error instanceof Response)

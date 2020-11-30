@@ -24,5 +24,5 @@ export class Document {
 export class Rank {
   minimumScore: number;
   title: string;
-  color: string;
+  backgroundColor: string;
 }

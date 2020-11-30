@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { Rank, Test } from 'src/app/entities/test.entities';
+import {
+  FinalResultCalculationMethod,
+  Rank,
+  Test,
+} from 'src/app/entities/test.entities';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -109,7 +113,7 @@ export class TestViewComponent implements OnInit, OnDestroy {
     if (this.test?.attemptsNumber <= this.attempts.length)
       return 'У Вас не осталось попыток';
 
-      if (!this.test?.isActive) return 'Тест неактивен';
+    if (!this.test?.isActive) return 'Тест неактивен';
 
     const now = this.now;
 
@@ -139,6 +143,50 @@ export class TestViewComponent implements OnInit, OnDestroy {
         }
       )
     );
+  }
+
+  getAttemptRank(correctRatio: number): Rank {
+    let retval;
+    this.test.ranks.forEach((rank) => {
+      if (correctRatio >= rank.minimumSuccessRatio) retval = rank;
+    });
+    return retval;
+  }
+
+  getSequentPoints() {
+    let retval = 0;
+    switch (this.test.finalResultCalculationMethod) {
+      case FinalResultCalculationMethod.Best:
+        retval = this.attempts[0].correctPoints;
+        this.attempts.forEach((attempt) => {
+          if (attempt.correctPoints > retval) retval = attempt.correctPoints;
+        });
+        break;
+
+      case FinalResultCalculationMethod.Average:
+        this.attempts.forEach((attempt) => (retval += attempt.correctPoints));
+        retval /= this.attempts.length;
+        break;
+    }
+    return retval;
+  }
+
+  getSequentRank(): Rank {
+    let retval = 0;
+    switch (this.test.finalResultCalculationMethod) {
+      case FinalResultCalculationMethod.Best:
+        retval = this.attempts[0].correctRatio;
+        this.attempts.forEach((attempt) => {
+          if (attempt.correctRatio > retval) retval = attempt.correctRatio;
+        });
+        break;
+
+      case FinalResultCalculationMethod.Average:
+        this.attempts.forEach((attempt) => (retval += attempt.correctRatio));
+        retval /= this.attempts.length;
+        break;
+    }
+    return this.getAttemptRank(retval);
   }
 
   ngOnDestroy() {

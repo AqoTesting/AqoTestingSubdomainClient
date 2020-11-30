@@ -34,6 +34,7 @@ import { MemberNotIsApproved } from './guards/member-not-is-approved.guard';
 import { TestViewComponent } from './components/test/test-view.component';
 import { AttemptComponent } from './components/attempt/attempt.component';
 import { AttemptService } from './services/attempt.service';
+import { ToFixedPipe } from './pipes/to-fixed.pipe';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { AttemptService } from './services/attempt.service';
     AwaitApprovalComponent,
     TestViewComponent,
     AttemptComponent,
+    ToFixedPipe
   ],
   imports: [
     BrowserModule,

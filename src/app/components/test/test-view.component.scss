@@ -25,12 +25,12 @@
       border-bottom-width: 1px;
       border-bottom-style: solid;
       border-bottom-color: hsla(0, 0%, 100%, 0.12);
-
-      .circle {
-        width: 15px;
-        height: 15px;
-        border-radius: 100%;
-      }
     }
   }
+}
+
+.circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
 }

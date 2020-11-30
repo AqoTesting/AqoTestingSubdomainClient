@@ -17,7 +17,14 @@
       </div>
     </div>
     <ng-container *ngIf="test && attempts; else loading">
-      <div class="white" style="margin-top: 15px;padding: 2px 13px 2px 13px;border-left: 1px solid #ffffff1f;">
+      <div
+        class="white"
+        style="
+          margin-top: 15px;
+          padding: 2px 13px 2px 13px;
+          border-left: 1px solid #ffffff1f;
+        "
+      >
         <div class="test-fields">
           <div class="test-field" *ngIf="test?.description">
             <div class="test-field-name">Описание теста</div>
@@ -33,22 +40,55 @@
               {{ test.isActive ? "Активен" : "Неактивен" }}
             </div>
           </div>
-          <div class="test-field" *ngIf="test?.attemptsNumber">
-            <div class="test-field-name">Попыток</div>
-            <div class="test-field-value">
-              {{ test.attemptsNumber }}
-            </div>
-          </div>
           <div class="test-field" *ngIf="test?.startDate">
             <div class="test-field-name">Дата начала</div>
-            <div class="test-field-value" [title]="test.startDate | date: 'hh:mm d.MM.yyyy'">
+            <div
+              class="test-field-value"
+              [title]="test.startDate | date: 'hh:mm d.MM.yyyy'"
+            >
               {{ test.startDate | date: "d.MM.yy hh:mm" }}
             </div>
           </div>
           <div class="test-field" *ngIf="test?.endDate">
             <div class="test-field-name">Дата завершения</div>
-            <div class="test-field-value" [title]="test.endDate | date: 'hh:mm d.MM.yyyy'">
+            <div
+              class="test-field-value"
+              [title]="test.endDate | date: 'hh:mm d.MM.yyyy'"
+            >
               {{ test.endDate | date: "hh:mm d.MM" }}
+            </div>
+          </div>
+          <div class="test-field" *ngIf="test?.attemptsNumber">
+            <div class="test-field-name">Попыток осталось</div>
+            <div class="test-field-value">
+              {{ test.attemptsNumber - attempts.length }}
+            </div>
+          </div>
+          <div
+            class="test-field"
+            *ngIf="!test.ranks?.length && attempts?.length"
+          >
+            <div class="test-field-name">Итоговый балл</div>
+            <div class="test-field-value">
+              {{ getSequentPoints() }}
+            </div>
+          </div>
+          <div
+            class="test-field"
+            *ngIf="test.ranks?.length && attempts?.length"
+          >
+            <div class="test-field-name">Итоговая оценка</div>
+            <div
+              class="test-field-value"
+              style="display: flex; align-items: center; gap: 8px"
+            >
+              <div
+                class="circle"
+                [style.background-color]="
+                  '#' + getSequentRank().backgroundColor
+                "
+              ></div>
+              <div>{{ getSequentRank().title }}</div>
             </div>
           </div>
         </div>
@@ -68,20 +108,50 @@
                 <div class="test-fields">
                   <div class="test-field" *ngIf="!attempt.isActive">
                     <div class="test-field-name">Дата завершения</div>
-                    <div class="test-field-value" [title]="attempt.startDate | date: 'hh:mm d.MM.yyyy'">
+                    <div
+                      class="test-field-value"
+                      [title]="attempt.startDate | date: 'hh:mm d.MM.yyyy'"
+                    >
                       {{ attempt.endDate | date: "hh:mm d.MM" }}
                     </div>
                   </div>
                   <div class="test-field" *ngIf="attempt.isActive">
                     <div class="test-field-name">Дата начала</div>
-                    <div class="test-field-value" [title]="attempt.startDate | date: 'hh:mm d.MM.yyyy'">
+                    <div
+                      class="test-field-value"
+                      [title]="attempt.startDate | date: 'hh:mm d.MM.yyyy'"
+                    >
                       {{ attempt.startDate | date: "hh:mm d.MM" }}
                     </div>
                   </div>
-                  <div class="test-field">
+                  <div class="test-field" *ngIf="!test.ranks?.length">
                     <div class="test-field-name">Баллы</div>
                     <div class="test-field-value">
-                      {{ attempt.score }}
+                      {{ attempt.correctPoints }}/{{ attempt.maxPoints }}
+                    </div>
+                  </div>
+                  <div class="test-field" *ngIf="test.ranks?.length">
+                    <div class="test-field-name">Верность</div>
+                    <div class="test-field-value">
+                      {{ attempt.correctRatio * 100 | toFixed: 2 }}%
+                    </div>
+                  </div>
+                  <div class="test-field" *ngIf="test.ranks?.length">
+                    <div class="test-field-name">Оценка</div>
+                    <div
+                      class="test-field-value"
+                      style="display: flex; align-items: center; gap: 8px"
+                    >
+                      <div
+                        class="circle"
+                        [style.background-color]="
+                          '#' +
+                          getAttemptRank(attempt.correctRatio).backgroundColor
+                        "
+                      ></div>
+                      <div>
+                        {{ getAttemptRank(attempt.correctRatio).title }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -136,7 +206,7 @@
             <tr class="ranks-table-head">
               <th></th>
               <th style="padding-left: 0px">Оценка</th>
-              <th>Балл</th>
+              <th>% верности</th>
             </tr>
             <tr *ngFor="let rank of test.ranks" class="ranks-table-body">
               <td style="width: 25px">
@@ -149,7 +219,11 @@
                 {{ rank.title }}
               </td>
               <td>
-                {{ rank.minimumScore == 0 ? "" : "от " + rank.minimumScore + "%" }}
+                {{
+                  rank.minimumSuccessRatio == 0
+                    ? ""
+                    : "от " + rank.minimumSuccessRatio * 100 + "%"
+                }}
               </td>
             </tr>
           </table>

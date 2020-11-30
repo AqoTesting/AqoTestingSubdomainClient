@@ -10,7 +10,12 @@ export class Attempt {
   endDate: Date;
   isActive: boolean;
   ignore: boolean;
-  score: boolean;
+
+  correctPoints: number;
+  penalPoints: number;
+  
+  penalRatio: number;
+  correctRatio: number;
 }
 
 export class AttemptResumeData {

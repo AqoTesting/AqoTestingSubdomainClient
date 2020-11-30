@@ -14,6 +14,12 @@ export class Test {
   deactivationDate: string;
   shuffle: boolean = false;
   ranks: Rank[];
+  finalResultCalculationMethod: FinalResultCalculationMethod;
+}
+
+export enum FinalResultCalculationMethod {
+  Average = 0,
+  Best = 1,
 }
 
 export class Document {
@@ -22,7 +28,7 @@ export class Document {
 }
 
 export class Rank {
-  minimumScore: number;
+  minimumSuccessRatio: number;
   title: string;
   backgroundColor: string;
 }

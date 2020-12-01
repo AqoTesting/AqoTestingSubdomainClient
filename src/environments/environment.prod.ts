@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.aqotesting.tk',
+  apiUrl: 'api/',
   subdomain: window.location.host.split('.').reverse()[2],
 };

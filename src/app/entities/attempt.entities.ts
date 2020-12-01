@@ -11,9 +11,11 @@ export class Attempt {
   isActive: boolean;
   ignore: boolean;
 
+  maxPoints: number;
+
   correctPoints: number;
   penalPoints: number;
-  
+
   penalRatio: number;
   correctRatio: number;
 }

@@ -118,7 +118,11 @@ export class SignUpComponent implements OnInit, OnDestroy {
       () => {
         this.snackService.success('Вы успешно авторизовались');
         this.authService.setAuthorized(true);
-        this.router.navigate(['/await-approval']);
+        if (this.room.isApproveManually) {
+          this.router.navigate(['/await-approval']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       (error) => {
         if (error instanceof Response)

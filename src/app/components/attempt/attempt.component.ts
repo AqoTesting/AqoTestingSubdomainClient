@@ -248,6 +248,12 @@ export class AttemptComponent implements OnInit, OnDestroy {
         break;
       case QuestionTypes.Sequence:
         break;
+      case QuestionTypes.FillIn:
+        answer.fills = [];
+        this.question.options.forEach((option) => {
+          if (option.isBlank) answer.fills.push(option.text);
+        });
+        break;
     }
 
     answer.totalTimeAddition = moment().diff(this.questionOpenTime, 'second');

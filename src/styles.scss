@@ -368,3 +368,18 @@ mat-form-field {
     }
   }
 }
+
+.ignore-mat-field-padding-bottom {
+  .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+  }
+
+  .mat-form-field-underline {
+    bottom: 0;
+  }
+
+  .mat-form-field-infix {
+    margin: 0;
+    border: 0;
+  }
+}

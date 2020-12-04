@@ -47,14 +47,23 @@
             <mat-radio-group (change)="changeRadio($event.value)">
               <div *ngFor="let option of question.options; let i = index">
                 <div class="radio-group">
-                  <mat-radio-button class="radio-button" [value]="i" [checked]="option.chosen"></mat-radio-button>
-                  <div [innerHtml]="option.text" class="radio-content" (click)="changeRadio(i)" class="pointer"></div>
+                  <mat-radio-button
+                    class="radio-button"
+                    [value]="i"
+                    [checked]="option.chosen"
+                  ></mat-radio-button>
+                  <div
+                    [innerHtml]="option.text"
+                    class="radio-content"
+                    (click)="changeRadio(i)"
+                    class="pointer"
+                  ></div>
                 </div>
                 <div *ngIf="option?.imageUrl">
                   <div
                     *ngIf="option?.imageUrl"
                     class="flex-row-static"
-                    style="gap: 8px; margin-left: 36px;"
+                    style="gap: 8px; margin-left: 36px"
                   >
                     <div class="flex-row-static-item img">
                       <img [src]="option.imageUrl" />
@@ -78,15 +87,24 @@
           <ng-container *ngSwitchCase="1">
             <div *ngFor="let option of question.options">
               <div class="checkbox-group">
-                <mat-checkbox class="checkbox-button" [checked]="option.chosen" (change)="option.chosen = !option.chosen"></mat-checkbox>
-                <div [innerHtml]="option.text" class="radio-content" (click)="option.chosen = !option.chosen" class="pointer"></div>
+                <mat-checkbox
+                  class="checkbox-button"
+                  [checked]="option.chosen"
+                  (change)="option.chosen = !option.chosen"
+                ></mat-checkbox>
+                <div
+                  [innerHtml]="option.text"
+                  class="radio-content"
+                  (click)="option.chosen = !option.chosen"
+                  class="pointer"
+                ></div>
               </div>
 
               <div *ngIf="option?.imageUrl">
                 <div
                   *ngIf="option?.imageUrl"
                   class="flex-row-static"
-                  style="gap: 8px; margin-left: 36px;"
+                  style="gap: 8px; margin-left: 36px"
                 >
                   <div class="flex-row-static-item img">
                     <img [src]="option.imageUrl" />
@@ -105,12 +123,14 @@
                 </div>
               </div>
             </div>
-            
           </ng-container>
           <ng-container *ngSwitchCase="2">
             <div class="matching-group">
               <div class="matching-left">
-                <div *ngFor="let option of question.leftMatching" class="matching-left-drag">
+                <div
+                  *ngFor="let option of question.leftMatching"
+                  class="matching-left-drag"
+                >
                   <div [innerHtml]="option.text"></div>
                   <div *ngIf="option?.imageUrl">
                     <div
@@ -137,8 +157,16 @@
                 </div>
               </div>
               <div class="matching-right">
-                <div cdkDropList (cdkDropListDropped)="drop($event)" style="width: calc(100% - 12px);">
-                  <div *ngFor="let option of question.rightMatching" class="matching-right-drag" cdkDrag>
+                <div
+                  cdkDropList
+                  (cdkDropListDropped)="drop($event)"
+                  style="width: calc(100% - 12px)"
+                >
+                  <div
+                    *ngFor="let option of question.rightMatching"
+                    class="matching-right-drag"
+                    cdkDrag
+                  >
                     <div [innerHtml]="option.text"></div>
                     <div *ngIf="option?.imageUrl">
                       <div
@@ -163,16 +191,39 @@
                       </div>
                     </div>
                   </div>
-              </div>
+                </div>
               </div>
             </div>
           </ng-container>
           <ng-container *ngSwitchCase="3">Порядок</ng-container>
+          <ng-container *ngSwitchCase="4">
+            <div
+              style="
+                flex-wrap: wrap;
+                gap: 8px;
+                display: flex;
+                align-items: baseline;
+              "
+            >
+              <span *ngFor="let option of question.options; let i = index">
+                <ng-container *ngIf="option.isBlank; else textBlank">
+                  <mat-form-field class="ignore-mat-field-padding-bottom" color="accent">
+                    <input matInput type="text" [(ngModel)]="option.text" />
+                  </mat-form-field>
+                </ng-container>
+                <ng-template #textBlank>
+                  {{ option.text }}
+                </ng-template>
+              </span>
+            </div>
+          </ng-container>
         </div>
         <div></div>
       </mat-card>
       <div class="navigate">
-        <div class="timer" *ngIf="timer.second">{{ timer.minute }}:{{ timer.second }}</div>
+        <div class="timer" *ngIf="timer.second">
+          {{ timer.minute }}:{{ timer.second }}
+        </div>
         <div>
           <button
             mat-icon-button
@@ -184,7 +235,11 @@
           </button>
         </div>
         <div>
-          <button mat-icon-button matTooltip="Список вопросов" [disabled]="lock">
+          <button
+            mat-icon-button
+            matTooltip="Список вопросов"
+            [disabled]="lock"
+          >
             <mat-icon>list</mat-icon>
           </button>
         </div>
@@ -200,8 +255,10 @@
         </div>
       </div>
       <div class="finalize">
-        <button mat-flat-button [disabled]="lock" (click)="endAttempt()">Завершить тест</button>
-        <br><br>
+        <button mat-flat-button [disabled]="lock" (click)="endAttempt()">
+          Завершить тест
+        </button>
+        <br /><br />
       </div>
     </div>
     <ng-template #loading>

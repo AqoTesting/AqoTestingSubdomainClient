@@ -49,6 +49,7 @@ export class Question {
 }
 
 export class CommonOption {
+  isBlank: boolean;
   chosen: boolean;
   text: boolean;
   imageUrl: boolean;
@@ -64,6 +65,7 @@ export class CommonTestAnswer {
   sequence: number[];
   leftSequence: number[];
   rightSequence: number[];
+  fills: string[];
   blurTimeAddition: number;
   totalTimeAddition: number;
 }
@@ -79,4 +81,5 @@ export enum QuestionTypes {
   MultipleChoice = 1,
   Matching = 2,
   Sequence = 3,
+  FillIn = 4,
 }

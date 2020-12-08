@@ -212,7 +212,7 @@
                   </mat-form-field>
                 </ng-container>
                 <ng-template #textBlank>
-                  {{ option.text }}
+                  <span [innerHtml]="option.text"></span>
                 </ng-template>
               </span>
             </div>

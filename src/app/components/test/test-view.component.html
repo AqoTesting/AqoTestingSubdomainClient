@@ -222,7 +222,7 @@
                 {{
                   rank.minimumSuccessRatio == 0
                     ? ""
-                    : "от " + rank.minimumSuccessRatio * 100 + "%"
+                    : "от " + (rank.minimumSuccessRatio * 100 | toFixed: 2) + "%"
                 }}
               </td>
             </tr>

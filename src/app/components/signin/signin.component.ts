@@ -83,12 +83,13 @@ export class SignInComponent implements OnInit {
     this.signInForm.value.roomId = this.room.id;
     this.authService.getMemberTokenSignIn(this.signInForm.value).subscribe(
       () => {
-        this.snackService.success('Вы успешно авторизовались');
+        window.location.reload();
+        /*this.snackService.success('Вы успешно авторизовались');
         if (this.room.isApproveManually) {
           this.router.navigate(['/await-approval']);
         } else {
           this.router.navigate(['/']);
-        }
+        }*/
       },
       (error) => {
         if (error instanceof Response)

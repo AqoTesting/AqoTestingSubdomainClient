@@ -131,7 +131,7 @@
                     </div>
                   </div>
                   <div class="test-field" *ngIf="test.ranks?.length">
-                    <div class="test-field-name">Верность</div>
+                    <div class="test-field-name">Верно</div>
                     <div class="test-field-value">
                       {{ attempt.correctRatio * 100 | toFixed: 2 }}%
                     </div>
@@ -206,7 +206,7 @@
             <tr class="ranks-table-head">
               <th></th>
               <th style="padding-left: 0px">Оценка</th>
-              <th>% верности</th>
+              <th>Верно</th>
             </tr>
             <tr *ngFor="let rank of test.ranks" class="ranks-table-body">
               <td style="width: 25px">

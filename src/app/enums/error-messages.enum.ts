@@ -129,7 +129,7 @@ export enum ErrorMessagesText {
   MemberIsNotRegistered = 'Участник не зарегистрирован',
   MemberIsRegistered = 'Участник зарегистрирован',
 
-  HasNoActiveAttempt = 'Нет активной попытке',
+  HasNoActiveAttempt = 'Нет активной попытки',
   HasActiveAttempt = 'Уже есть актвная попытка',
 
   // Attempts

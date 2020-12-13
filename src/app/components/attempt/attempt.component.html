@@ -213,6 +213,8 @@
                   >
                     <input
                       autoSizeInput
+                      [setParentWidth]="true"
+                      [extraWidth]="1"
                       [minWidth]="option?.text?.length ? 10 : 50"
                       matInput
                       type="text"

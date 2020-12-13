@@ -46,6 +46,8 @@ export class Question {
 
   leftMatching: Matching[];
   rightMatching: Matching[];
+
+  touched: boolean;
 }
 
 export class CommonOption {

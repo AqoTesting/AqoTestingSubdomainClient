@@ -1,0 +1,39 @@
+<h2 mat-dialog-title cdkFocusInitial>Список вопросов</h2>
+<mat-dialog-content>
+  <div *ngFor="let section of data.sections; let sectionIndex = index">
+    {{ section.title }}
+
+    <div
+      *ngFor="let question of section.questions; let questionIndex = index"
+      class="list-question clip pointer"
+      [routerLink]="[
+        '/attempt/active/section',
+        sectionIndex,
+        'question',
+        questionIndex
+      ]"
+      (click)="closeDialog()"
+      [style.pointer-events]="data.sectionId == sectionIndex && data.questionId == questionIndex ? 'none' : ''"
+      [style.margin-left]="data.sectionId == sectionIndex && data.questionId == questionIndex ? '24px' : ''"
+    >
+      <mat-icon *ngIf="data.sectionId != sectionIndex || data.questionId != questionIndex">{{
+        question.touched ? "check_box" : "check_box_outline_blank"
+      }}</mat-icon>
+      <div>
+        &nbsp;{{ question.text }}
+        <div
+          *ngIf="!question.text"
+          [ngSwitch]="question.type"
+          style="color: gray"
+        >
+          <div *ngSwitchCase="0">Один из</div>
+          <div *ngSwitchCase="1">Несколько из</div>
+          <div *ngSwitchCase="2">Сопоставление</div>
+          <div *ngSwitchCase="3">Порядок</div>
+          <div *ngSwitchCase="4">Вставьте пропуск</div>
+        </div>
+      </div>
+    </div>
+    <div class="mat-divider"></div>
+  </div>
+</mat-dialog-content>

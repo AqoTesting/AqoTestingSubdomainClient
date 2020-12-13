@@ -91,6 +91,10 @@ mat-icon {
   user-select: none;
 }
 
+mat-dialog-container {
+  overflow: hidden !important;
+}
+
 .clip {
   display: block;
   margin-bottom: -3px;

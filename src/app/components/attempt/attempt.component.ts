@@ -4,6 +4,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { fromEvent, interval, Subscription } from 'rxjs';
@@ -18,6 +19,10 @@ import {
 import { Response } from 'src/app/entities/response.entities';
 import { SnackService } from 'src/app/services/snack.service';
 import { AttemptService } from '../../services/attempt.service';
+import {
+  ListQuestions,
+  ListQuestionsComponent,
+} from './list-questions.component';
 
 @Component({
   selector: 'app-attempt',
@@ -56,7 +61,8 @@ export class AttemptComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private attemptService: AttemptService,
     private snack: SnackService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     route.queryParams.pipe(take(1)).subscribe(({ regarding }) => {
       if (regarding == 'true') this.regarding = true;
@@ -271,13 +277,13 @@ export class AttemptComponent implements OnInit, OnDestroy {
 
   getAnswer(): CommonTestAnswer {
     let answer: CommonTestAnswer | any = new CommonTestAnswer();
-
     switch (this.question.type) {
       case QuestionTypes.SingleChoice:
         answer.selectedOption = this.question.options.findIndex(
           (option) => option.chosen
         );
         if (!~answer.selectedOption) answer = {};
+        else this.question.touched = true;
         break;
       case QuestionTypes.MultipleChoice:
         answer.selectedOptions = [];
@@ -285,6 +291,7 @@ export class AttemptComponent implements OnInit, OnDestroy {
           if (option.chosen) answer.selectedOptions.push(index);
         });
         if (!answer.selectedOptions.length) answer = {};
+        else this.question.touched = true;
         break;
       case QuestionTypes.Matching:
         answer.leftSequence = this.question.leftMatching.map(
@@ -293,6 +300,7 @@ export class AttemptComponent implements OnInit, OnDestroy {
         answer.rightSequence = this.question.rightMatching.map(
           (option) => option.index
         );
+        this.question.touched = true;
         break;
       case QuestionTypes.Sequence:
         break;
@@ -301,6 +309,7 @@ export class AttemptComponent implements OnInit, OnDestroy {
         this.question.options.forEach((option) => {
           if (option.isBlank) answer.fills.push(option.text);
         });
+        this.question.touched = true;
         break;
     }
 
@@ -423,6 +432,16 @@ export class AttemptComponent implements OnInit, OnDestroy {
           )
       );
     }
+  }
+
+  openListQuestions() {
+    this.dialog.open(ListQuestionsComponent, {
+      data: <ListQuestions>{
+        sections: this.attempt.sections,
+        sectionId: this.sectionId,
+        questionId: this.questionId,
+      },
+    });
   }
 
   ngOnDestroy() {

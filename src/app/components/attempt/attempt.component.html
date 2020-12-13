@@ -254,11 +254,11 @@
             <mat-icon>list</mat-icon>
           </button>
         </div>
-        <div>
+        <div class="divider" style="margin-left: 8px;border-left: 1px solid rgba(255, 255, 255, 0.12);"></div>
+        <div (click)="next()" matTooltip="Следующий вопрос" style="display: flex; align-items: center;padding-left: 16px;" class="pointer">
+          <span>Далее</span>
           <button
             mat-icon-button
-            (click)="next()"
-            matTooltip="Следующий вопрос"
             [disabled]="lock"
           >
             <mat-icon>navigate_next</mat-icon>
@@ -266,7 +266,7 @@
         </div>
       </div>
       <div class="finalize">
-        <button mat-flat-button [disabled]="lock" (click)="endAttempt()">
+        <button mat-button [disabled]="lock" (click)="endAttempt()" class="white">
           Завершить тест
         </button>
         <br /><br />

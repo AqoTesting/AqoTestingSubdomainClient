@@ -16,8 +16,12 @@
         </button>
       </div>
     </div>
+    <br />
     <div *ngIf="attempt; else loading" class="attempt">
-      <mat-card class="question">
+      <mat-card
+        class="section question"
+        title="Вопрос {{ currentQuestions }} из {{ numberQuestions }}"
+      >
         <div [innerHtml]="question?.text"></div>
         <div *ngIf="question?.imageUrl">
           <div
@@ -41,7 +45,7 @@
             </div>
           </div>
         </div>
-        <div class="mat-divider"></div>
+        <div class="mat-divider" *ngIf="question?.text"></div>
         <div class="options" [ngSwitch]="question.type">
           <ng-container *ngSwitchCase="0">
             <mat-radio-group (change)="changeRadio($event.value)">
@@ -198,11 +202,17 @@
           <ng-container *ngSwitchCase="3">Порядок</ng-container>
           <ng-container *ngSwitchCase="4">
             <div>
-              <ng-container *ngFor="let option of question.options; let i = index">
+              <ng-container
+                *ngFor="let option of question.options; let i = index"
+              >
                 <ng-container *ngIf="option.isBlank; else textBlank">
                   <mat-form-field
                     class="ignore-mat-field-padding-bottom"
-                    style="width: fit-content;display: inline-block;max-width: 100%;"
+                    style="
+                      width: fit-content;
+                      display: inline-block;
+                      max-width: 100%;
+                    "
                     color="accent"
                   >
                     <input
@@ -248,19 +258,42 @@
             <mat-icon>list</mat-icon>
           </button>
         </div>
-        <div class="divider" style="margin-left: 8px;border-left: 1px solid rgba(255, 255, 255, 0.12);"></div>
-        <div (click)="next()" matTooltip="Следующий вопрос" style="display: flex; align-items: center;padding-left: 16px;" class="pointer">
-          <span>Далее</span>
-          <button
-            mat-icon-button
-            [disabled]="lock"
+        <div
+          class="divider"
+          style="
+            margin-left: 8px;
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+          "
+        ></div>
+        <div
+          (click)="next()"
+          matTooltip=" {{
+            currentQuestions == numberQuestions
+              ? 'К первому вопросу'
+              : 'Следующий вопрос'
+          }}"
+          style="display: flex; align-items: center; padding-left: 16px"
+          [class.pointer]="!lock"
+        >
+          <span
+            style="height: 20px"
+            [style.color]="lock ? 'rgb(255,255,255,.3)' : ''"
+            >{{
+              currentQuestions == numberQuestions ? "Сначала" : "Далее"
+            }}</span
           >
+          <button mat-icon-button [disabled]="lock">
             <mat-icon>navigate_next</mat-icon>
           </button>
         </div>
       </div>
       <div class="finalize">
-        <button mat-button [disabled]="lock" (click)="endAttempt()" class="white">
+        <button
+          mat-button
+          [disabled]="lock"
+          (click)="endAttempt()"
+          class="white"
+        >
           Завершить тест
         </button>
         <br /><br />

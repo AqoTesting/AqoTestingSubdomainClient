@@ -158,3 +158,20 @@
     padding: 0px !important;
   }
 }
+
+.section {
+  position: relative;
+  border-radius: 0 4px 4px 4px !important;
+  &::before {
+    left: 0;
+    top: -24px;
+    position: absolute;
+    content: attr(title);
+    color: #fff;
+    border-radius: 4px 4px 0 0;
+    width: fit-content;
+    background: #9c27b0;
+    padding: 5px;
+    font-size: 12px;
+  }
+}

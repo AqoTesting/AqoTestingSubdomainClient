@@ -43,6 +43,9 @@ export class AttemptComponent implements OnInit, OnDestroy {
     second: null,
   };
 
+  public numberQuestions = 0;
+  public currentQuestions = 0;
+
   private get now(): moment.Moment {
     return moment();
   }
@@ -124,10 +127,13 @@ export class AttemptComponent implements OnInit, OnDestroy {
 
           attempt.sections.forEach((section: Section) => {
             section.questions = Object.keys(section.questions)
-              .map((key) => ({
-                id: key,
-                ...section.questions[key],
-              }))
+              .map((key) => {
+                this.numberQuestions++;
+                return {
+                  id: key,
+                  ...section.questions[key],
+                };
+              })
               .sort((a, b) => a.weight - b.weight);
           });
 
@@ -183,6 +189,21 @@ export class AttemptComponent implements OnInit, OnDestroy {
         this.section = this.attempt.sections[this.sectionId];
         this.question = this.section.questions[this.questionId];
         this.startBlurObserver();
+
+        this.currentQuestions = 0;
+
+        calc: for (let sectionIndex in this.attempt.sections) {
+          if (+sectionIndex == this.sectionId) {
+            for(let questionIndex in this.attempt.sections[sectionIndex].questions) {
+              this.currentQuestions++;
+              if(+questionIndex == this.questionId) break calc;
+            }
+          } else
+            this.currentQuestions += this.attempt.sections[
+              sectionIndex
+            ].questions.length;
+        }
+        
         return;
       }
     }

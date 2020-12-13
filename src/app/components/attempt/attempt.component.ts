@@ -46,6 +46,8 @@ export class AttemptComponent implements OnInit, OnDestroy {
   public numberQuestions = 0;
   public currentQuestions = 0;
 
+  private regarding = false;
+
   private get now(): moment.Moment {
     return moment();
   }
@@ -56,6 +58,9 @@ export class AttemptComponent implements OnInit, OnDestroy {
     private snack: SnackService,
     private router: Router
   ) {
+    route.queryParams.pipe(take(1)).subscribe(({ regarding }) => {
+      if (regarding == 'true') this.regarding = true;
+    });
     route.params.subscribe(({ sectionId, questionId }) => {
       if (this.attempt) {
         this.toSectionAndQuestion(+sectionId, +questionId);
@@ -166,6 +171,24 @@ export class AttemptComponent implements OnInit, OnDestroy {
           });
 
           this.attempt = attempt;
+
+          if (
+            this.regarding &&
+            this.attempt.currentSectionId &&
+            this.attempt.currentQuestionId
+          ) {
+            this.attempt.sections.forEach((section, index) => {
+              if (section.id == this.attempt.currentSectionId)
+                this.sectionId = index;
+            });
+            this.attempt.sections[this.sectionId].questions.forEach(
+              (question, index) => {
+                if (question.id == this.attempt.currentQuestionId)
+                  this.questionId = index;
+              }
+            );
+          }
+
           this.toSectionAndQuestion(this.sectionId, this.questionId);
           this.startTimer();
         },
@@ -194,16 +217,17 @@ export class AttemptComponent implements OnInit, OnDestroy {
 
         calc: for (let sectionIndex in this.attempt.sections) {
           if (+sectionIndex == this.sectionId) {
-            for(let questionIndex in this.attempt.sections[sectionIndex].questions) {
+            for (let questionIndex in this.attempt.sections[sectionIndex]
+              .questions) {
               this.currentQuestions++;
-              if(+questionIndex == this.questionId) break calc;
+              if (+questionIndex == this.questionId) break calc;
             }
           } else
             this.currentQuestions += this.attempt.sections[
               sectionIndex
             ].questions.length;
         }
-        
+
         return;
       }
     }

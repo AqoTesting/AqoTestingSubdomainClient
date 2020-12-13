@@ -63,12 +63,7 @@ export class TestsComponent implements OnInit, OnDestroy {
   }
 
   proceedAttempt() {
-    this.router.navigate([
-      '/attempt/active/section',
-      this.attemptResumeData.currentSectionId || "0",
-      'question',
-      this.attemptResumeData.currentQuestionId || "0",
-    ]);
+    this.router.navigate(['/attempt/active'], { queryParams: { regarding: 'true' } });
   }
 
   testAvailable(test: Test): string {

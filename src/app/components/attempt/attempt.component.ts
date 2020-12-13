@@ -43,7 +43,8 @@ export class AttemptComponent implements OnInit, OnDestroy {
   private focusTime: moment.Moment;
   private blurTime: moment.Moment;
   private blurTimeAddition: number;
-  public timer: { minute: string; second: string } = {
+  public timer: { hours: string, minute: string; second: string } = {
+    hours: null,
     minute: null,
     second: null,
   };
@@ -107,16 +108,18 @@ export class AttemptComponent implements OnInit, OnDestroy {
     const tick = () => {
       const now = this.now;
       const diff = moment.duration(end.diff(now));
+      const hours = diff.hours();
       const minute = diff.minutes();
       const second = diff.seconds();
-      this.timer.minute = minute.toString();
+      this.timer.hours = hours != 0 ? hours.toString() : null;
+      this.timer.minute = String(minute).padStart(2, '0');
       this.timer.second = String(second).padStart(2, '0');
 
       if (now >= end) {
         this.endAttempt(true);
       }
 
-      if (minute < 0 || second < 0) {
+      if (hours < 0 || minute < 0 || second < 0) {
         this.router.navigate(['test', this.attempt.testId]);
       }
     };

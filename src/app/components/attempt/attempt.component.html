@@ -237,7 +237,7 @@
       </mat-card>
       <div class="navigate">
         <div class="timer" *ngIf="timer.second">
-          {{ timer.minute }}:{{ timer.second }}
+          {{ timer.hours ? timer.hours+':' : '' }}{{ timer.minute }}:{{ timer.second }}
         </div>
         <div>
           <button

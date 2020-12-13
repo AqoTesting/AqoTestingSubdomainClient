@@ -213,7 +213,7 @@
                   >
                     <input
                       autoSizeInput
-                      [minWidth]="75"
+                      [minWidth]="option?.text?.length ? 10 : 50"
                       matInput
                       type="text"
                       [(ngModel)]="option.text"

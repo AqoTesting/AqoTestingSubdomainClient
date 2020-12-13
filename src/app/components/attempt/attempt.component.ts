@@ -98,8 +98,12 @@ export class AttemptComponent implements OnInit, OnDestroy {
       this.timer.minute = minute.toString();
       this.timer.second = String(second).padStart(2, '0');
 
-      if (minute == 0 && second == 1) {
+      if (now >= end) {
         this.endAttempt(true);
+      }
+
+      if (minute < 0 || second < 0) {
+        this.router.navigate(['test', this.attempt.testId]);
       }
     };
 
@@ -156,7 +160,6 @@ export class AttemptComponent implements OnInit, OnDestroy {
           });
 
           this.attempt = attempt;
-          console.log(this.attempt);
           this.toSectionAndQuestion(this.sectionId, this.questionId);
           this.startTimer();
         },

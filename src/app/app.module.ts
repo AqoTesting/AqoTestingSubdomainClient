@@ -35,6 +35,7 @@ import { TestViewComponent } from './components/test/test-view.component';
 import { AttemptComponent } from './components/attempt/attempt.component';
 import { AttemptService } from './services/attempt.service';
 import { ToFixedPipe } from './pipes/to-fixed.pipe';
+import { AutoSizeInputModule } from 'ngx-autosize-input';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { ToFixedPipe } from './pipes/to-fixed.pipe';
     AwaitApprovalComponent,
     TestViewComponent,
     AttemptComponent,
-    ToFixedPipe
+    ToFixedPipe,
   ],
   imports: [
     BrowserModule,
@@ -62,6 +63,7 @@ import { ToFixedPipe } from './pipes/to-fixed.pipe';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    AutoSizeInputModule,
   ],
   providers: [
     AuthService,

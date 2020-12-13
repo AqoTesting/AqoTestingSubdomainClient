@@ -124,19 +124,19 @@
                       {{ attempt.startDate | date: "hh:mm d.MM" }}
                     </div>
                   </div>
-                  <div class="test-field" *ngIf="!test.ranks?.length">
+                  <div class="test-field" *ngIf="!test.ranks?.length && !attempt.isActive">
                     <div class="test-field-name">Баллы</div>
                     <div class="test-field-value">
                       {{ attempt.correctPoints }}/{{ attempt.maxPoints }}
                     </div>
                   </div>
-                  <div class="test-field" *ngIf="test.ranks?.length">
+                  <div class="test-field" *ngIf="test.ranks?.length && !attempt.isActive">
                     <div class="test-field-name">Верно</div>
                     <div class="test-field-value">
                       {{ attempt.correctRatio * 100 | toFixed: 2 }}%
                     </div>
                   </div>
-                  <div class="test-field" *ngIf="test.ranks?.length">
+                  <div class="test-field" *ngIf="test.ranks?.length && !attempt.isActive">
                     <div class="test-field-name">Оценка</div>
                     <div
                       class="test-field-value"

@@ -207,8 +207,17 @@
             >
               <span *ngFor="let option of question.options; let i = index">
                 <ng-container *ngIf="option.isBlank; else textBlank">
-                  <mat-form-field class="ignore-mat-field-padding-bottom" color="accent">
-                    <input matInput type="text" [(ngModel)]="option.text" />
+                  <mat-form-field
+                    class="ignore-mat-field-padding-bottom"
+                    color="accent"
+                  >
+                    <input
+                      autoSizeInput
+                      [minWidth]="75"
+                      matInput
+                      type="text"
+                      [(ngModel)]="option.text"
+                    />
                   </mat-form-field>
                 </ng-container>
                 <ng-template #textBlank>

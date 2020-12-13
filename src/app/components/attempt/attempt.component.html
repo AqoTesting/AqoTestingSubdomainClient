@@ -197,18 +197,12 @@
           </ng-container>
           <ng-container *ngSwitchCase="3">Порядок</ng-container>
           <ng-container *ngSwitchCase="4">
-            <div
-              style="
-                flex-wrap: wrap;
-                gap: 8px;
-                display: flex;
-                align-items: baseline;
-              "
-            >
-              <span *ngFor="let option of question.options; let i = index">
+            <div>
+              <ng-container *ngFor="let option of question.options; let i = index">
                 <ng-container *ngIf="option.isBlank; else textBlank">
                   <mat-form-field
                     class="ignore-mat-field-padding-bottom"
+                    style="width: fit-content;display: inline-block;max-width: 100%;"
                     color="accent"
                   >
                     <input
@@ -225,7 +219,7 @@
                 <ng-template #textBlank>
                   <span [innerHtml]="option.text"></span>
                 </ng-template>
-              </span>
+              </ng-container>
             </div>
           </ng-container>
         </div>

@@ -19,7 +19,7 @@
       <mat-icon *ngIf="data.sectionId != sectionIndex || data.questionId != questionIndex">{{
         question.touched ? "check_box" : "check_box_outline_blank"
       }}</mat-icon>
-      <div>
+      <div style="display: flex;">
         &nbsp;{{ question.text }}
         <div
           *ngIf="!question.text"

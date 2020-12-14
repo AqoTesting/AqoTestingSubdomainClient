@@ -111,7 +111,7 @@ export class AttemptComponent implements OnInit, OnDestroy {
       const hours = diff.hours();
       const minute = diff.minutes();
       const second = diff.seconds();
-      this.timer.hours = hours != 0 ? hours.toString() : null;
+      this.timer.hours = hours > 0 ? hours.toString() : null;
       this.timer.minute = String(minute).padStart(2, '0');
       this.timer.second = String(second).padStart(2, '0');
 

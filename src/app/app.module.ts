@@ -37,6 +37,7 @@ import { AttemptService } from './services/attempt.service';
 import { ToFixedPipe } from './pipes/to-fixed.pipe';
 import { AutoSizeInputModule } from 'ngx-autosize-input';
 import { ListQuestionsComponent } from './components/attempt/list-questions.component';
+import { SafePipe } from './pipes/safe.pipe';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { ListQuestionsComponent } from './components/attempt/list-questions.comp
     AttemptComponent,
     ToFixedPipe,
     ListQuestionsComponent,
+    SafePipe,
   ],
   imports: [
     BrowserModule,

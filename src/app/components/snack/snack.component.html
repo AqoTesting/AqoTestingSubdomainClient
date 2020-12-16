@@ -7,7 +7,7 @@
     data.type == "success" ? "info" : "error"
   }}</mat-icon>
 
-  <span [innerHTML]="data.message"></span>
+  <span [innerHTML]="data.message | safe: 'html'"></span>
 
   <div class="mat-snack-bar-container-local-action">
     <button (click)="close()" mat-button>

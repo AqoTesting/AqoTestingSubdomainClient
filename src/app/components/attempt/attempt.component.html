@@ -22,7 +22,7 @@
         class="section question"
         title="Вопрос {{ currentQuestions }} из {{ numberQuestions }}"
       >
-        <div [innerHtml]="question?.text"></div>
+        <div [innerHtml]="question?.text | safe: 'html'"></div>
         <div *ngIf="question?.imageUrl">
           <div
             *ngIf="question?.imageUrl"
@@ -57,11 +57,13 @@
                     [checked]="option.chosen"
                   ></mat-radio-button>
                   <div
-                    [innerHtml]="option.text"
+                    [innerHtml]="option.text | safe: 'html'"
                     class="radio-content"
                     (click)="changeRadio(i)"
                     class="pointer"
-                  ></div>
+                  >
+                </div>
+                  
                 </div>
                 <div *ngIf="option?.imageUrl">
                   <div
@@ -97,7 +99,7 @@
                   (change)="option.chosen = !option.chosen"
                 ></mat-checkbox>
                 <div
-                  [innerHtml]="option.text"
+                  [innerHtml]="option.text | safe: 'html'"
                   class="radio-content"
                   (click)="option.chosen = !option.chosen"
                   class="pointer"
@@ -135,7 +137,7 @@
                   *ngFor="let option of question.leftMatching"
                   class="matching-left-drag"
                 >
-                  <div [innerHtml]="option.text"></div>
+                  <div [innerHtml]="option.text | safe: 'html'"></div>
                   <div *ngIf="option?.imageUrl">
                     <div
                       *ngIf="option?.imageUrl"
@@ -171,7 +173,7 @@
                     class="matching-right-drag"
                     cdkDrag
                   >
-                    <div [innerHtml]="option.text"></div>
+                    <div [innerHtml]="option.text | safe: 'html'"></div>
                     <div *ngIf="option?.imageUrl">
                       <div
                         *ngIf="option?.imageUrl"
@@ -227,7 +229,7 @@
                   </mat-form-field>
                 </ng-container>
                 <ng-template #textBlank>
-                  <span [innerHtml]="option.text"></span>
+                  <span [innerHtml]="option.text | safe: 'html'"></span>
                 </ng-template>
               </ng-container>
             </div>

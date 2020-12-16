@@ -9,7 +9,7 @@
       </div>
       <div
         *ngIf="room.description"
-        [innerHtml]="room.description"
+        [innerHtml]="room.description | safe: 'html'"
         class="room-description"
       ></div>
 

@@ -1,7 +1,7 @@
 <div class="auth-card">
   <mat-card *ngIf="room && room.description" style="margin-bottom: 15px">
     <mat-card-title>Описание</mat-card-title>
-    <mat-card-content [innerHtml]="room.description"></mat-card-content>
+    <mat-card-content [innerHtml]="room.description | safe: 'html'"></mat-card-content>
   </mat-card>
   <mat-card>
     <mat-card-title>Регистрация</mat-card-title>

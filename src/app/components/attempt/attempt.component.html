@@ -61,9 +61,7 @@
                     class="radio-content"
                     (click)="changeRadio(i)"
                     class="pointer"
-                  >
-                </div>
-                  
+                  ></div>
                 </div>
                 <div *ngIf="option?.imageUrl">
                   <div
@@ -238,9 +236,11 @@
         <div></div>
       </mat-card>
       <div class="navigate">
-        <div class="timer" *ngIf="timer.second">
-          {{ timer.hours ? timer.hours+':' : '' }}{{ timer.minute }}:{{ timer.second }}
-        </div>
+        <span
+          class="timer"
+          *ngIf="timer"
+          [innerHtml]="timer"
+        ></span>
         <div>
           <button
             mat-icon-button
